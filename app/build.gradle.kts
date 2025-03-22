@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt) // Use alias for Hilt plugin
+    alias(libs.plugins.jetbrainsKotlinPluginSerialization) // Use alias for Hilt plugin
+
     kotlin("kapt")
 }
 
