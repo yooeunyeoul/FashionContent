@@ -1,5 +1,6 @@
 package com.example.stylefeed
 
+import ProductScreen
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -32,24 +33,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-}
-
-@Composable
-fun ProductScreen() {
-    val viewModel: ProductViewModel = mavericksViewModel()
-//    val viewModel: ExampleViewModel = mavericksViewModel()
-    val state by viewModel.collectAsState(ProductState::sections)
-
-    when (val sections = state) {
-        is Loading -> CircularProgressIndicator()
-        is Success -> {
-            Log.d("Sections", sections.invoke().toString())
-        }
-        is Fail -> {
-            Log.d("Sections", sections.error.toString())
-        }
-        else -> {
-            Log.d("Sections", "else")
-        }
-    }
 }
