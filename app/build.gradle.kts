@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt) // Use alias for Hilt plugin
+    kotlin("kapt")
 }
 
 android {
@@ -56,4 +58,25 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Dagger Hilt dependencies
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+
+    // ----- Retrofit + Kotlin Serialization -----
+    implementation(libs.retrofit)
+    implementation(libs.okhttp3.logging.interceptor)
+    implementation(libs.okhttp)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.kotlinx.serialization.json)
+
+    // ----- Mavericks -----
+    implementation(libs.mavericks)
+    implementation(libs.mavericks.compose) // Compose 연동
+    implementation(libs.mavericks.hilt)    // Hilt 연동
+    implementation(libs.mavericks.navigation) // Navigate 사용시
+
+
+    implementation(libs.coil.compose)
 }
