@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,7 +32,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import coil.compose.AsyncImage
 import com.example.stylefeed.domain.model.Banner
 import kotlinx.coroutines.Job
@@ -41,7 +45,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @Composable
-fun BannerSlider(banners: List<Banner>) {
+fun BannerSlider(banners: List<Banner>, isVisible: Boolean) {
     if (banners.isEmpty()) return
 
     val pageCount = banners.size
@@ -61,21 +65,58 @@ fun BannerSlider(banners: List<Banner>) {
                 Log.d("BannerSliderDebug", "Scrolling to next page")
                 pagerState.animateScrollToPage(
                     pagerState.currentPage + 1,
-                    animationSpec = tween(800, easing = FastOutSlowInEasing)
+                    animationSpec = tween(100, easing = FastOutSlowInEasing)
                 )
                 delay(3000)
             }
         }
     }
 
+    LaunchedEffect(isVisible) {
+        if (!isVisible && pagerState.currentPageOffsetFraction != 0f) {
+            pagerState.animateScrollToPage(
+                pagerState.currentPage,  // 현재 페이지로 즉시 되돌리기
+                animationSpec = tween(100)  // 매우 짧은 시간으로 빠르게 처리
+            )
+        }
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+
     fun stopAutoScroll() {
         Log.d("BannerSliderDebug", "AutoScroll stopped")
         autoScrollJob.value?.cancel()
     }
 
-    DisposableEffect(Unit) {
-        startAutoScroll()
-        onDispose { stopAutoScroll() }
+    // Lifecycle에 따라 자동 스크롤 관리
+    DisposableEffect(lifecycleOwner.lifecycle, isVisible) {
+        val lifecycle = lifecycleOwner.lifecycle
+
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_RESUME -> {
+                    if (isVisible) startAutoScroll()
+                }
+
+                Lifecycle.Event.ON_PAUSE -> stopAutoScroll()
+                else -> Unit
+            }
+        }
+
+        lifecycle.addObserver(observer)
+
+        // Lifecycle 및 Visibility에 따라 즉시 상태를 결정합니다.
+        if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED) && isVisible) {
+            startAutoScroll()
+        } else {
+            stopAutoScroll()
+        }
+
+        onDispose {
+            lifecycle.removeObserver(observer)
+            stopAutoScroll()
+        }
     }
 
     Box(

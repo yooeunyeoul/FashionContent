@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -21,15 +24,27 @@ fun SectionsList(
     listState: LazyListState,
     sectionHeights: MutableMap<Int, Float>,
 ) {
+    val visibleBannerIndices by remember {
+        derivedStateOf {
+            listState.layoutInfo.visibleItemsInfo.map { it.index }.toSet()
+        }
+    }
+
     Crossfade(targetState = isVisible, animationSpec = tween(FadeAnimationDurationMillis)) { visible ->
-        val modifier = if (visible) Modifier.fillMaxSize() else Modifier.fillMaxSize().alpha(0f)
-        LazyColumn(modifier = modifier, state = listState) {
+        LazyColumn(
+            modifier = if (visible) Modifier.fillMaxSize() else Modifier.fillMaxSize().alpha(0f),
+            state = listState
+        ) {
             sections.forEachIndexed { index, section ->
                 item(key = section.hashCode()) {
-                    Box(Modifier.onGloballyPositioned {
-                        sectionHeights[index] = it.size.height.toFloat()
-                    }) {
-                        SectionView(section)
+                    Box(
+                        Modifier.onGloballyPositioned {
+                            sectionHeights[index] = it.size.height.toFloat()
+                        }
+                    ) {
+                        val bannerVisible = visibleBannerIndices.contains(index)
+
+                        SectionView(section, bannerVisible)
                     }
                 }
             }
