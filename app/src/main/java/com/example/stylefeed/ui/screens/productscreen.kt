@@ -81,7 +81,9 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
                     } else {
                         // 높이 측정용 (보이지 않음)
                         LazyColumn(
-                            modifier = Modifier.fillMaxSize().alpha(0f),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .alpha(0f),
                             state = listState
                         ) {
                             sections().forEach { section ->
@@ -109,8 +111,6 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
 @Composable
 fun SectionView(section: Section) {
     Column {
-        section.header?.let { Header(it) }
-
         when (val content = section.content) {
             is Content.BannerContent -> BannerSlider(content.banners)
             is Content.GridContent -> ProductGrid(content.products)
