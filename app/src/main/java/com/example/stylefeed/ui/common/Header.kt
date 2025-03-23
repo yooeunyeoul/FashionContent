@@ -1,6 +1,7 @@
 package com.example.stylefeed.ui.common
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -24,32 +26,33 @@ import com.example.stylefeed.domain.model.Header
 import com.example.stylefeed.ui.theme.FashionContentTheme
 
 @Composable
-fun Header(header: Header) {
+fun Header(modifier: Modifier = Modifier, header: Header) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = header.title,
-            style = MaterialTheme.typography.titleMedium
-        )
+        Column(
+            modifier = Modifier.weight(1f, fill = true) // 텍스트가 우선적으로 확장
+        ) {
+            Text(
+                text = header.title,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 2, // 최대 2줄 허용
+                overflow = TextOverflow.Ellipsis
+            )
+        }
 
-        // iconURL이 있는 경우 타이틀 오른쪽에 아이콘 표시
         header.iconUrl?.let { iconUrl ->
             Spacer(modifier = Modifier.width(8.dp))
             Image(
                 painter = rememberAsyncImagePainter(iconUrl),
                 contentDescription = null,
-                modifier = Modifier
-                    .size(20.dp)
+                modifier = Modifier.size(20.dp)
             )
         }
 
-        Spacer(modifier = Modifier.weight(1f))
-
-        // linkURL이 있으면 오른쪽 끝에 전체보기 버튼 표시
         header.linkUrl?.let {
             TextButton(onClick = { /* navigate */ }) {
                 Text("전체")
@@ -57,7 +60,6 @@ fun Header(header: Header) {
         }
     }
 }
-
 
 // 1. 타이틀만 존재 (iconUrl, linkUrl 없음)
 @Preview(name = "Title Only")
