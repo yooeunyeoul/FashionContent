@@ -19,6 +19,8 @@ fun ProductGrid(products: List<Product>) {
     val itemHeight = 200.dp  // 카드의 예상 최대 높이
     val gridHeight = itemHeight * rows
 
+    //320 x320
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = Modifier

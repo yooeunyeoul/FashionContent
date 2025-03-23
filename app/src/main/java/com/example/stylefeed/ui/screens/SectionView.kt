@@ -13,11 +13,11 @@ import com.example.stylefeed.ui.common.ProductHorizontalList
 import com.example.stylefeed.ui.common.StyleGrid
 
 @Composable
-fun SectionView(section: Section) {
+fun SectionView(section: Section, isSectionVisible: Boolean) {
     Column {
         section.header?.let { Header(header = it) }
         when (val content = section.content) {
-            is Content.BannerContent -> BannerSlider(content.banners)
+            is Content.BannerContent -> BannerSlider(content.banners, isVisible = isSectionVisible)
             is Content.GridContent -> ProductGrid(content.products)
             is Content.ScrollContent -> ProductHorizontalList(content.products)
             is Content.StyleContent -> StyleGrid(content.styles)
