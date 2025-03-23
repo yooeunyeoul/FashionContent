@@ -27,7 +27,7 @@ private const val AnimationDurationMillis = 400
 @Composable
 fun StickyHeader(headerText: String?) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (headerText != null) Color.White.copy(alpha = 1f) else Color.White.copy(alpha = 0f),
+        targetValue = if (headerText != null) Color.White.copy(alpha = 0.9f) else Color.White.copy(alpha = 0f),
         animationSpec = tween(AnimationDurationMillis),
         label = "StickyHeaderBackgroundAnimation"
     )
