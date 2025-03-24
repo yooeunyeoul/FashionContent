@@ -5,6 +5,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +37,9 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
 
     val deviceHeightPx = LocalConfiguration.current.screenHeightDp.dp.value
     val sectionHeights = remember { mutableStateMapOf<Int, Float>() }
+    val firstIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
+    val offset by remember { derivedStateOf { listState.firstVisibleItemScrollOffset } }
+
 
     LaunchedEffect(sectionsAsync) {
         if (sectionsAsync is Success) {
@@ -53,9 +57,7 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
     }
 
     // Sticky 헤더 업데이트
-    LaunchedEffect(listState.firstVisibleItemIndex, listState.firstVisibleItemScrollOffset) {
-        val firstIndex = listState.firstVisibleItemIndex
-        val offset = listState.firstVisibleItemScrollOffset
+    LaunchedEffect(firstIndex, offset) {
         if (sectionsAsync is Success) {
             val sections = sectionsAsync.invoke()
             val sectionHeight = sectionHeights[firstIndex] ?: 0f
@@ -77,6 +79,7 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
                 )
                 StickyHeader(headerText = currentStickyHeader.value)
             }
+
             is Fail -> Text("로딩 실패: ${sections.error.message}", Modifier.align(Alignment.Center))
             else -> Unit
         }

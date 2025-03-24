@@ -1,4 +1,4 @@
-package com.example.stylefeed.data.repositoryImpl
+package com.example.stylefeed.data.repository
 
 import com.example.stylefeed.data.remote.product_api.mapper.toDomain
 import com.example.stylefeed.data.remote.product_api.service.ProductApiService
@@ -17,7 +17,7 @@ class ProductRepositoryImpl @Inject constructor(
     override fun getSections(): Flow<List<Section>> =
         apiService.fetchSections().map { result ->
             when (result) {
-                is NetworkResult.Success -> result.data.data?.map { it.toDomain() } ?: emptyList()
+                is NetworkResult.Success -> result.data.data.map { it.toDomain() } ?: emptyList()
                 is NetworkResult.Error -> throw ApiException(result.code, result.message)
                 is NetworkResult.NetworkError -> throw ApiException(-1, "네트워크 연결 오류")
             }
