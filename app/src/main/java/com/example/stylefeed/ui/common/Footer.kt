@@ -7,12 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.stylefeed.domain.model.Footer
+import com.example.stylefeed.domain.model.FooterType
 
 @Composable
-fun Footer(footer: Footer) {
+fun Footer(
+    footer: Footer,
+    onFooterClick: (FooterType) -> Unit
+) {
     Button(
-        onClick = { /* REFRESH 또는 MORE 처리 로직 */ },
-        modifier = Modifier.fillMaxWidth().padding(16.dp)
+        onClick = { onFooterClick(footer.type) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
     ) {
         Text(footer.title)
     }

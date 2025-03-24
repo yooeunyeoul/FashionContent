@@ -8,7 +8,7 @@ object NoEvent : UiEvent
 object NoEffect : UiEffect
 
 sealed class CounterEvent : UiEvent {
-    object Increment : CounterEvent()
+    data object Increment : CounterEvent()
 }
 
 sealed class CounterEffect : UiEffect {
