@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.stylefeed"
+    namespace = "com.example.stylefeed"  // ✅ 앱 기본 namespace
     compileSdk = 35
 
     defaultConfig {
@@ -19,7 +19,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.stylefeed.HiltTestRunner"
     }
 
     buildTypes {
@@ -41,6 +41,7 @@ android {
     buildFeatures {
         compose = true
     }
+
 }
 
 dependencies {
@@ -53,7 +54,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -65,6 +65,26 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+
+    // Test libraries (Unit Tests)
+    testImplementation(libs.junit)
+    testImplementation("io.mockk:mockk:1.13.17")  // 👈 MockK
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1") // 👈 Coroutine Test
+    testImplementation("app.cash.turbine:turbine:1.2.0") // 👈 Turbine for Flow testing
+    testImplementation("com.google.truth:truth:1.4.4")  // 👈 Truth for assertions
+    testImplementation("com.airbnb.android:mavericks-testing:3.0.9")
+
+    // Android Instrumentation & Compose UI Tests
+    testImplementation(libs.hilt.android.testing)
+    // Hilt testing dependencies
+    androidTestAnnotationProcessor(libs.hilt.compiler)
+    testAnnotationProcessor(libs.hilt.compiler)
+    kaptTest(libs.hilt.compiler)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
+
+    testImplementation(libs.mockwebserver)
+    androidTestImplementation(libs.mockwebserver)
 
     // ----- Retrofit + Kotlin Serialization -----
     implementation(libs.retrofit)
