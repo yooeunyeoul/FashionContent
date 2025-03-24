@@ -6,11 +6,11 @@ import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.hilt.AssistedViewModelFactory
 import com.airbnb.mvrx.hilt.hiltMavericksViewModelFactory
-import com.example.stylefeed.CounterEffect
-import com.example.stylefeed.CounterEvent
 import com.example.stylefeed.base.BaseMviViewModel
+import com.example.stylefeed.base.CounterEffect
+import com.example.stylefeed.base.CounterEvent
 import com.example.stylefeed.domain.model.Section
-import com.example.stylefeed.domain.repository.ProductRepository
+import com.example.stylefeed.domain.usecase.GetSectionsUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -21,15 +21,16 @@ data class ProductState(
 
 class ProductViewModel @AssistedInject constructor(
     @Assisted initialState: ProductState,
-    private val repository: ProductRepository,
+    private val getSectionsUseCase: GetSectionsUseCase,
 ) : BaseMviViewModel<ProductState, CounterEvent, CounterEffect>(initialState) {
 
     init {
         fetchSections()
     }
 
+
     private fun fetchSections() {
-        repository.getSections()
+        getSectionsUseCase()
             .execute { copy(sections = it) }
     }
 

@@ -1,0 +1,110 @@
+{
+  "data": [
+    {
+      "header": {
+        "title": "무신사 추천 코디"
+      },
+      "contents": {
+        "type": "STYLE",
+        "styles": [
+          {
+            "linkURL": "https://www.musinsa.com/app/styles/views/27417",
+            "thumbnailURL": "https://image.musinsa.com/images/style/list/2022062214302100000008217.jpg"
+          },
+          {
+            "linkURL": "https://www.musinsa.com/app/styles/views/27416",
+            "thumbnailURL": "https://image.musinsa.com/images/style/list/2022062214285200000072520.jpg"
+          }
+        ]
+      },
+      "footer": {
+        "type": "MORE",
+        "title": "더보기"
+      }
+    },
+    {
+      "contents": {
+        "type": "BANNER",
+        "banners": [
+          {
+            "linkURL": "https://www.musinsa.com/app/campaign/index/junebeautyfull",
+            "thumbnailURL": "https://image.msscdn.net/images/event_banner/2022061009432800000059650.jpg",
+            "title": "",
+            "description": "",
+            "keyword": ""
+          },
+          {
+            "linkURL": "https://www.musinsa.com/app/plan/views/22278",
+            "thumbnailURL": "https://image.msscdn.net/images/event_banner/2022062311154900000044053.jpg",
+            "title": "하이드아웃 S/S 시즌오프",
+            "description": "최대 30% 할인",
+            "keyword": "세일"
+          }
+        ]
+      }
+    },
+    {
+      "header": {
+        "title": "디스커버리 익스페디션 인기 스니커즈: 최대 50% 할인",
+        "iconURL": "https://image.msscdn.net/icons/mobile/clock.png",
+        "linkURL": "https://www.musinsa.com/brands/discoveryexpedition?category3DepthCodes=&category2DepthCodes=&category1DepthCode=018&colorCodes=&startPrice=&endPrice=&exclusiveYn=&includeSoldOut=&saleGoods=&timeSale=&includeKeywords=&sortCode=discount_rate&tags=&page=1&size=90&listViewType=small&campaignCode=&groupSale=&outletGoods=false&boutiqueGoods="
+      },
+      "contents": {
+        "type": "SCROLL",
+        "goods": [
+          {
+            "linkURL": "https://www.musinsa.com/app/goods/1727824",
+            "thumbnailURL": "https://image.msscdn.net/images/goods_img/20201221/1727824/1727824_4_320.jpg",
+            "brandName": "디스커버리 익스페디션",
+            "price": 59500,
+            "saleRate": 50,
+            "hasCoupon": true
+          },
+          {
+            "linkURL": "https://www.musinsa.com/app/goods/2309841",
+            "thumbnailURL": "https://image.msscdn.net/images/goods_img/20220117/2309841/2309841_2_320.jpg",
+            "brandName": "디스커버리 익스페디션",
+            "price": 68000,
+            "saleRate": 20,
+            "hasCoupon": false
+          }
+        ]
+      },
+      "footer": {
+        "type": "REFRESH",
+        "title": "새로운 추천",
+        "iconURL": "https://image.msscdn.net/icons/mobile/clock.png"
+      }
+    },
+    {
+      "header": {
+        "title": "클리어런스"
+      },
+      "contents": {
+        "type": "GRID",
+        "goods": [
+          {
+            "linkURL": "https://www.musinsa.com/app/goods/2281818",
+            "thumbnailURL": "https://image.msscdn.net/images/goods_img/20211224/2281818/2281818_1_320.jpg",
+            "brandName": "아스트랄 프로젝션",
+            "price": 39900,
+            "saleRate": 50,
+            "hasCoupon": true
+          },
+          {
+            "linkURL": "https://www.musinsa.com/app/goods/2281817",
+            "thumbnailURL": "https://image.msscdn.net/images/goods_img/20211224/2281817/2281817_1_320.jpg",
+            "brandName": "아스트랄 프로젝션",
+            "price": 39900,
+            "saleRate": 45,
+            "hasCoupon": false
+          }
+        ]
+      },
+      "footer": {
+        "type": "MORE",
+        "title": "더보기"
+      }
+    }
+  ]
+}

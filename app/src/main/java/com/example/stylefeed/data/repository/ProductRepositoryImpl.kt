@@ -1,4 +1,4 @@
-package com.example.stylefeed.data.repositoryImpl
+package com.example.stylefeed.data.repository
 
 import com.example.stylefeed.data.remote.product_api.mapper.toDomain
 import com.example.stylefeed.data.remote.product_api.service.ProductApiService

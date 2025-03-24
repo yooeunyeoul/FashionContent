@@ -14,8 +14,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 //        enableEdgeToEdge()
         setContent {
-            val viewModel: ExampleViewModel = mavericksViewModel()
-            viewModel.stateFlow
             FashionContentTheme {
                 ProductScreen()
             }
