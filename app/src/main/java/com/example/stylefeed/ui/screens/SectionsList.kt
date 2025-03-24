@@ -13,16 +13,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.onGloballyPositioned
-import com.example.stylefeed.domain.model.Section
+import com.example.stylefeed.domain.model.FooterType
+import com.example.stylefeed.domain.model.SectionState
 
 private const val FadeAnimationDurationMillis = 600
 
 @Composable
 fun SectionsList(
-    sections: List<Section>,
+    sectionStates: List<SectionState>,
     isVisible: Boolean,
     listState: LazyListState,
     sectionHeights: MutableMap<Int, Float>,
+    onFooterClick: (SectionState, FooterType) -> Unit
 ) {
     val visibleBannerIndices by remember {
         derivedStateOf {
@@ -35,8 +37,8 @@ fun SectionsList(
             modifier = if (visible) Modifier.fillMaxSize() else Modifier.fillMaxSize().alpha(0f),
             state = listState
         ) {
-            sections.forEachIndexed { index, section ->
-                item(key = section.hashCode()) {
+            sectionStates.forEachIndexed { index, sectionState ->
+                item(key = sectionState.hashCode()) {
                     Box(
                         Modifier.onGloballyPositioned {
                             sectionHeights[index] = it.size.height.toFloat()
@@ -44,7 +46,7 @@ fun SectionsList(
                     ) {
                         val bannerVisible = visibleBannerIndices.contains(index)
 
-                        SectionView(section, bannerVisible)
+                        SectionView(sectionState, bannerVisible,onFooterClick = onFooterClick)
                     }
                 }
             }

@@ -21,6 +21,7 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.compose.collectAsState
 import com.airbnb.mvrx.compose.mavericksViewModel
 import com.example.stylefeed.ui.screens.SectionsList
+import com.example.stylefeed.ui.viewmodel.ProductEvent
 import com.example.stylefeed.ui.viewmodel.ProductState
 import com.example.stylefeed.ui.viewmodel.ProductViewModel
 import kotlinx.coroutines.delay
@@ -62,7 +63,7 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
             val sections = sectionsAsync.invoke()
             val sectionHeight = sectionHeights[firstIndex] ?: 0f
             currentStickyHeader.value = if (sectionHeight > deviceHeightPx && offset > 0) {
-                sections?.getOrNull(firstIndex)?.header?.title
+                sections?.getOrNull(firstIndex)?.section?.header?.title
             } else null
         }
     }
@@ -72,10 +73,14 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
             is Loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
             is Success -> {
                 SectionsList(
-                    sections = sections(),
+                    sectionStates = sections(),
                     isVisible = isVisible.value,
                     listState = listState,
-                    sectionHeights = sectionHeights
+                    sectionHeights = sectionHeights,
+                    { sectionState, footerType ->
+                        val sectionIndex = sections().indexOf(sectionState)
+                        viewModel.onEvent(ProductEvent.OnFooterClicked(sectionIndex, footerType))
+                    }
                 )
                 StickyHeader(headerText = currentStickyHeader.value)
             }
