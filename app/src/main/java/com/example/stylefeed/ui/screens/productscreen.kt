@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -20,13 +20,14 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.compose.collectAsState
 import com.airbnb.mvrx.compose.mavericksViewModel
+import com.example.stylefeed.domain.model.Footer
+import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.ui.screens.SectionsList
 import com.example.stylefeed.ui.viewmodel.ProductEvent
 import com.example.stylefeed.ui.viewmodel.ProductState
 import com.example.stylefeed.ui.viewmodel.ProductViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
@@ -40,17 +41,11 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
     val sectionHeights = remember { mutableStateMapOf<Int, Float>() }
     val firstIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
     val offset by remember { derivedStateOf { listState.firstVisibleItemScrollOffset } }
+    val scope = rememberCoroutineScope()
 
 
     LaunchedEffect(sectionsAsync) {
         if (sectionsAsync is Success) {
-            snapshotFlow { listState.layoutInfo.totalItemsCount }
-                .filter { it > 0 }
-                .first()
-
-            delay(100)
-            listState.scrollToItem(0)
-            delay(50)
             isVisible.value = true
         } else {
             isVisible.value = false
@@ -77,9 +72,23 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
                     isVisible = isVisible.value,
                     listState = listState,
                     sectionHeights = sectionHeights,
-                    { sectionState, footerType ->
-                        val sectionIndex = sections().indexOf(sectionState)
+                    { sectionState, footerType , sectionIndex ->
                         viewModel.onEvent(ProductEvent.OnFooterClicked(sectionIndex, footerType))
+
+                        if (footerType == FooterType.MORE) {
+                            scope.launch {
+                                delay(200)  // UI갱신 대기
+
+                                // ✅ 정확한 섹션 위치로 이동
+                                val visibleItems = listState.layoutInfo.visibleItemsInfo
+                                val isSectionAlreadyVisible = visibleItems.any { it.index == sectionIndex }
+
+                                // 섹션이 안보이면 이동
+                                if (!isSectionAlreadyVisible) {
+                                    listState.animateScrollToItem(sectionIndex)
+                                }
+                            }
+                        }
                     }
                 )
                 StickyHeader(headerText = currentStickyHeader.value)

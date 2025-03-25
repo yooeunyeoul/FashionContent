@@ -8,13 +8,13 @@ import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.hilt.AssistedViewModelFactory
 import com.airbnb.mvrx.hilt.hiltMavericksViewModelFactory
 import com.example.stylefeed.base.BaseMviViewModel
-import com.example.stylefeed.domain.model.Content
 import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.domain.model.SectionState
 import com.example.stylefeed.domain.usecase.GetSectionsUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import com.example.stylefeed.domain.model.shuffleContent
 
 data class ProductState(
     val sections: Async<List<SectionState>> = Uninitialized
@@ -82,12 +82,4 @@ class ProductViewModel @AssistedInject constructor(
     }
 
 }
-private fun Content.shuffleContent(): Content = when (this) {
-    is Content.GridContent -> copy(products = products.shuffled())
-    is Content.ScrollContent -> copy(products = products.shuffled())
-    is Content.BannerContent -> copy(banners = banners.shuffled())
-    is Content.StyleContent -> copy(styles = styles.shuffled())
-    else -> this
-}
-
 

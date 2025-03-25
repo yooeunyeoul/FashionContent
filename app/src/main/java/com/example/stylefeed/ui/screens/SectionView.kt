@@ -30,8 +30,15 @@ fun SectionView(
             is Content.UnknownContent -> Text("지원하지 않는 컨텐츠입니다.")
         }
         sectionState.section.footer?.let { footer ->
-            Footer(footer) { footerType ->
-                onFooterClick(sectionState, footerType)
+            val shouldShowFooter = when (footer.type) {
+                FooterType.MORE -> sectionState.visibleItemCount < sectionState.totalItemCount
+                else -> true
+            }
+
+            if (shouldShowFooter) {
+                Footer(footer) { footerType ->
+                    onFooterClick(sectionState, footerType)
+                }
             }
         }
     }
