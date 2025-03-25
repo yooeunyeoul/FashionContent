@@ -11,7 +11,7 @@ import dagger.multibindings.IntoMap
 
 @Module
 @InstallIn(MavericksViewModelComponent::class)
-interface ExampleViewModelModule {
+interface ViewModelModule {
     
 
     @Binds

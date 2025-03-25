@@ -1,69 +1,110 @@
 package com.example.stylefeed.ui.common
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
 import com.example.stylefeed.domain.model.Style
 
 @Composable
 fun StyleGrid(styles: List<Style>) {
-    val itemHeight = 120.dp  // 각 아이템 높이 (원하는 대로 조정 가능)
     val spacing = 8.dp
-    val totalRows = ((styles.size - 1) / 3) + 2 // 첫 아이템이 2줄 차지하므로 +2
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val columnCount = 3
+    val totalSpacing = spacing * (columnCount - 1)
+    val columnWidth = (screenWidth - totalSpacing - spacing * 2) / columnCount
+    val bigItemHeight = columnWidth * 2 + spacing
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        userScrollEnabled = false, // 내부 스크롤 비활성화 (필수!)
+    val gridItems = styles.drop(3)
+    val gridRows = (gridItems.size + 2) / 3
+    val gridHeight = columnWidth * gridRows + spacing * (gridRows - 1)
+
+    Column(
         modifier = Modifier
-            .padding(8.dp)
-            .height((itemHeight + spacing) * totalRows)  // 전체 높이 명시적 지정
+            .fillMaxWidth()
+            .padding(spacing)
     ) {
-        itemsIndexed(
-            items = styles,
-            span = { index, _ ->
-                if (index == 0) GridItemSpan(2) else GridItemSpan(1)
-            }
-        ) { index, style ->
-            val aspectRatio = 1f
-            val heightModifier = if (index == 0) {
-                Modifier
-                    .aspectRatio(aspectRatio)
-                    .padding(spacing)
-            } else {
-                Modifier
-                    .aspectRatio(aspectRatio)
-                    .padding(spacing)
-            }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(bigItemHeight),
+            horizontalArrangement = Arrangement.spacedBy(spacing)
+        ) {
+            // 첫 번째 큰 아이템 (2x2)
+            StyleCard(
+                style = styles[0],
+                modifier = Modifier
+                    .width(columnWidth * 2 + spacing)
+                    .aspectRatio(1f)
+            )
 
-            StyleCard(style, modifier = heightModifier)
+            Column(
+                verticalArrangement = Arrangement.spacedBy(spacing),
+                modifier = Modifier
+                    .width(columnWidth)
+                    .fillMaxHeight()
+            ) {
+                if (styles.size > 1) {
+                    StyleCard(
+                        style = styles[1],
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    )
+                } else {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+
+                if (styles.size > 2) {
+                    StyleCard(
+                        style = styles[2],
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    )
+                } else {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            }
         }
-    }
-}
-@Composable
-fun StyleCard(style: Style, modifier: Modifier = Modifier) {
-    Card(
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .clickable { /* 스타일 클릭 처리 */ }
-    ) {
-        Image(
-            painter = rememberAsyncImagePainter(style.thumbnailUrl),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize()
-        )
+
+        if (gridItems.isNotEmpty()) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                userScrollEnabled = false,
+                verticalArrangement = Arrangement.spacedBy(spacing),
+                horizontalArrangement = Arrangement.spacedBy(spacing),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(gridHeight)
+                    .padding(top = spacing)
+            ) {
+                items(gridItems, key = { it.linkUrl }) { style ->
+                    StyleCard(
+                        style = style,
+                        modifier = Modifier.aspectRatio(1f)
+                    )
+                }
+            }
+        }
     }
 }

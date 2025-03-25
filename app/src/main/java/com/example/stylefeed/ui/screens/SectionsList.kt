@@ -24,7 +24,7 @@ fun SectionsList(
     isVisible: Boolean,
     listState: LazyListState,
     sectionHeights: MutableMap<Int, Float>,
-    onFooterClick: (SectionState, FooterType) -> Unit
+    onFooterClick: (SectionState, FooterType, Int) -> Unit
 ) {
     val visibleBannerIndices by remember {
         derivedStateOf {
@@ -46,7 +46,9 @@ fun SectionsList(
                     ) {
                         val bannerVisible = visibleBannerIndices.contains(index)
 
-                        SectionView(sectionState, bannerVisible,onFooterClick = onFooterClick)
+                        SectionView(sectionState, bannerVisible, onFooterClick = { state, footerType ->
+                            onFooterClick(state, footerType, index)
+                        })
                     }
                 }
             }

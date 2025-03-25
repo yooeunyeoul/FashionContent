@@ -16,6 +16,7 @@ fun List<Section>.toSectionStates(): List<SectionState> {
 
         val visibleCount = when (section.content) {
             is Content.GridContent -> minOf(6, totalCount)
+            is Content.StyleContent -> minOf(6, totalCount)
             else -> totalCount // Grid가 아닌 경우엔 모두 보여줌
         }
 

@@ -6,6 +6,7 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.test.MavericksTestRule
 import com.example.stylefeed.domain.model.Content
 import com.example.stylefeed.domain.model.Section
+import com.example.stylefeed.domain.model.SectionState
 import com.example.stylefeed.domain.usecase.GetSectionsUseCase
 import com.example.stylefeed.ui.viewmodel.ProductState
 import com.example.stylefeed.ui.viewmodel.ProductViewModel
@@ -34,7 +35,15 @@ class ProductViewModelTest {
             Section(header = null, content = Content.UnknownContent, footer = null)
         )
 
-        coEvery { getSectionsUseCase() } returns flowOf(sections)
+        val sectionStates = sections.map {
+            SectionState(
+                section = it,
+                visibleItemCount = 0,
+                totalItemCount = 0
+            )
+        }
+
+        coEvery { getSectionsUseCase() } returns flowOf(sectionStates)
 
         // When
         val viewModel = ProductViewModel(ProductState(), getSectionsUseCase)
@@ -43,7 +52,7 @@ class ProductViewModelTest {
         viewModel.stateFlow.test {
             val initialState = awaitItem()
             assertTrue(initialState.sections is Success)
-            assertEquals(sections, initialState.sections.invoke())
+            assertEquals(sectionStates, initialState.sections.invoke())
 
             cancelAndIgnoreRemainingEvents()
         }
