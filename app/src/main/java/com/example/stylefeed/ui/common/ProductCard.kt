@@ -1,4 +1,5 @@
 package com.example.stylefeed.ui.common
+
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -40,7 +42,7 @@ fun ProductCard(
     LaunchedEffect(recentlyAdded) {
         if (recentlyAdded) {
             animatedAlpha.snapTo(0f)
-            animatedAlpha.animateTo(1f, animationSpec = tween(durationMillis = 800))
+            animatedAlpha.animateTo(1f, animationSpec = tween(durationMillis = 900))
         } else {
             animatedAlpha.snapTo(1f)
         }
@@ -64,7 +66,9 @@ fun ProductCard(
         Spacer(modifier = Modifier.height(6.dp))
 
         Column(
-            modifier = Modifier.padding(horizontal = 4.dp),
+            modifier = Modifier
+                .padding(horizontal = 4.dp)
+                .heightIn(min = 80.dp, max = 100.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -75,7 +79,7 @@ fun ProductCard(
             )
 
             Text(
-                text = "${product.price}원",
+                text = "${product.formattedPrice}원",
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Bold
             )

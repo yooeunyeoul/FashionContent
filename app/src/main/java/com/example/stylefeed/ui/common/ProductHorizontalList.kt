@@ -14,7 +14,7 @@ import com.example.stylefeed.domain.model.Product
 
 @Composable
 fun ProductHorizontalList(products: List<Product>, recentlyAddedIds: Set<String>,imageAspectRatio: Float) {
-    val cardHeight = 240.dp  // 🔥 전체 카드 높이를 확실히 줄임
+    val cardHeight = 300.dp  // 🔥 전체 카드 높이를 확실히 줄임
     val imageHeight = 200.dp  // 이미지 높이 설정
 
     val cardWidth = imageHeight * imageAspectRatio  // 이미지 비율을 기준으로 너비 설정

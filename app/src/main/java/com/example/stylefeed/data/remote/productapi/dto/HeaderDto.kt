@@ -1,4 +1,4 @@
-package com.example.stylefeed.data.remote.product_api.dto
+package com.example.stylefeed.data.remote.productapi.dto
 
 import kotlinx.serialization.Serializable
 

@@ -1,5 +1,8 @@
 package com.example.stylefeed.ui.screens.product.interactions
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.snapshotFlow
@@ -25,13 +28,33 @@ fun handleFooterClick(
 
     if (footerType == FooterType.MORE) {
         scope.launch {
-            snapshotFlow { sectionHeights[sectionIndex] } // 🔥 UI 갱신 대기 명확히 처리
+            snapshotFlow { sectionHeights[sectionIndex] }
                 .mapNotNull { it }
-                .filter { newHeight -> newHeight > previousHeight } // 높이 증가 확인
-                .take(1) // 최초 한번만
+                .filter { newHeight -> newHeight > previousHeight }
+                .take(1)
                 .collect { newHeight ->
-                    val increasedHeight = newHeight - previousHeight
-                    listState.animateScrollBy(increasedHeight)
+                    // ✅ 먼저 높이 확장 애니메이션 실행
+                    val animatedHeight = Animatable(previousHeight)
+                    animatedHeight.animateTo(
+                        targetValue = newHeight,
+                        animationSpec = tween(300, easing = FastOutSlowInEasing)
+                    )
+
+                    // ✅ 확장 애니메이션 완료 후 실제 높이값 갱신
+                    sectionHeights[sectionIndex] = animatedHeight.value
+
+                    // 🔥 확장 후 현재 보이는 영역 확인 후 스크롤 수행
+                    val viewportHeight = listState.layoutInfo.viewportEndOffset.toFloat()
+                    val sectionItemInfo = listState.layoutInfo.visibleItemsInfo
+                        .firstOrNull { it.index == sectionIndex }
+
+                    if (sectionItemInfo != null) {
+                        val sectionBottomOffset = sectionItemInfo.offset + animatedHeight.value
+                        if (sectionBottomOffset > viewportHeight) {
+                            val scrollByAmount = sectionBottomOffset - viewportHeight
+                            listState.animateScrollBy(scrollByAmount)
+                        }
+                    }
                 }
         }
     }

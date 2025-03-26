@@ -1,6 +1,6 @@
-package com.example.stylefeed.data.remote.product_api.mapper
+package com.example.stylefeed.data.remote.productapi.mapper
 
-import com.example.stylefeed.data.remote.product_api.dto.SectionDto
+import com.example.stylefeed.data.remote.productapi.dto.SectionDto
 import com.example.stylefeed.domain.model.Content
 import com.example.stylefeed.domain.model.Section
 

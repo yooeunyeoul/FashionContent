@@ -1,6 +1,6 @@
-package com.example.stylefeed.data.remote.product_api.mapper
+package com.example.stylefeed.data.remote.productapi.mapper
 
-import com.example.stylefeed.data.remote.product_api.dto.HeaderDto
+import com.example.stylefeed.data.remote.productapi.dto.HeaderDto
 import com.example.stylefeed.domain.model.Header
 
 fun HeaderDto.toDomain(): Header {

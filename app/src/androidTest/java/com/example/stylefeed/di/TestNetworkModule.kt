@@ -1,6 +1,6 @@
 package com.example.stylefeed.di
 
-import com.example.stylefeed.data.remote.product_api.service.ProductApiService
+import com.example.stylefeed.data.remote.productapi.service.ProductApiService
 import com.example.stylefeed.utils.NetworkResultCallAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -19,7 +19,8 @@ import javax.inject.Singleton
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
-    replaces = [NetworkModule::class] // 기존 NetworkModule을 테스트 모듈로 대체
+    replaces = [NetworkModule::class]
+    // 기존 NetworkModule을 테스트 모듈로 대체
 )
 object TestNetworkModule {
 

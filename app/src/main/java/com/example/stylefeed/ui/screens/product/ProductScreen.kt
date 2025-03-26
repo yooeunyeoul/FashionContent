@@ -32,9 +32,9 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
             listState = listState,
             sectionHeights = sectionHeights,
             apiError = apiError,
-            onFooterClick = { sectionState, footerType, sectionIndex ->
+            onFooterClick = { _, footerType, sectionIndex ->
                 handleFooterClick(
-                    onFooterClicked = viewModel::onEvent, // 🔥 이렇게 이벤트만 넘김
+                    onFooterClicked = viewModel::onEvent,
                     footerType = footerType,
                     sectionIndex = sectionIndex,
                     listState = listState,

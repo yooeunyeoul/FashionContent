@@ -33,24 +33,26 @@ fun Header(modifier: Modifier = Modifier, header: Header) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(
-            modifier = Modifier.weight(1f, fill = true) // 텍스트가 우선적으로 확장
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = header.title,
                 style = MaterialTheme.typography.titleMedium,
-                maxLines = 2, // 최대 2줄 허용
-                overflow = TextOverflow.Ellipsis
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
             )
-        }
 
-        header.iconUrl?.let { iconUrl ->
-            Spacer(modifier = Modifier.width(8.dp))
-            Image(
-                painter = rememberAsyncImagePainter(iconUrl),
-                contentDescription = null,
-                modifier = Modifier.size(20.dp)
-            )
+            header.iconUrl?.let { iconUrl ->
+                Spacer(modifier = Modifier.width(8.dp))
+                Image(
+                    painter = rememberAsyncImagePainter(iconUrl),
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
         }
 
         header.linkUrl?.let {
@@ -61,12 +63,50 @@ fun Header(modifier: Modifier = Modifier, header: Header) {
     }
 }
 
-// 1. 타이틀만 존재 (iconUrl, linkUrl 없음)
+@Composable
+fun HeaderPreview(header: Header, iconVector: ImageVector? = null) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = header.title,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f, fill = false)
+            )
+
+            iconVector?.let {
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = it,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+
+        header.linkUrl?.let {
+            TextButton(onClick = { /* navigate */ }) {
+                Text("전체")
+            }
+        }
+    }
+}
+
+// 프리뷰: Title Only
 @Preview(name = "Title Only")
 @Composable
 fun HeaderPreview_TitleOnly() {
     FashionContentTheme {
-        Header(
+        HeaderPreview(
             header = Header(
                 title = "클리어런스",
                 iconUrl = null,
@@ -76,28 +116,28 @@ fun HeaderPreview_TitleOnly() {
     }
 }
 
-// 2. 타이틀 + 아이콘 존재 (linkUrl 없음)
+// 프리뷰: Title with Icon
 @Preview(name = "Title with Icon")
 @Composable
 fun HeaderPreview_TitleWithIcon() {
     FashionContentTheme {
-        PreviewHeaderWithMaterialIcon(
+        HeaderPreview(
             header = Header(
                 title = "인기 스니커즈",
                 iconUrl = null,
                 linkUrl = null
             ),
-            icon = Icons.Filled.Info
+            iconVector = Icons.Filled.Info
         )
     }
 }
 
-// 3. 타이틀 + 전체버튼 존재 (iconUrl 없음)
+// 프리뷰: Title with Link
 @Preview(name = "Title with Link")
 @Composable
 fun HeaderPreview_TitleWithLink() {
     FashionContentTheme {
-        Header(
+        HeaderPreview(
             header = Header(
                 title = "스타일 보기",
                 iconUrl = null,
@@ -107,45 +147,18 @@ fun HeaderPreview_TitleWithLink() {
     }
 }
 
-// 4. 타이틀 + 아이콘 + 전체버튼 모두 존재
+// 프리뷰: Title + Icon + Link
 @Preview(name = "Title, Icon and Link")
 @Composable
 fun HeaderPreview_All() {
     FashionContentTheme {
-        PreviewHeaderWithMaterialIcon(
+        HeaderPreview(
             header = Header(
                 title = "디스커버리 스니커즈",
                 iconUrl = null,
                 linkUrl = "https://www.musinsa.com/brands/discoveryexpedition"
             ),
-            icon = Icons.Filled.Info
+            iconVector = Icons.Filled.Info
         )
-    }
-}
-
-// 실제 Header 컴포넌트를 Preview 용도로 Wrapping하여 Material 아이콘 사용
-@Composable
-fun PreviewHeaderWithMaterialIcon(header: Header, icon: ImageVector?) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(header.title, style = MaterialTheme.typography.titleMedium)
-        icon?.let {
-            Spacer(modifier = Modifier.width(8.dp))
-            Icon(
-                imageVector = it,
-                contentDescription = null,
-                modifier = Modifier.size(20.dp)
-            )
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        header.linkUrl?.let {
-            TextButton(onClick = { /* navigate */ }) {
-                Text("전체")
-            }
-        }
     }
 }

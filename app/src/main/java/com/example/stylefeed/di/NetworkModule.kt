@@ -1,6 +1,6 @@
 package com.example.stylefeed.di
 
-import com.example.stylefeed.data.remote.product_api.service.ProductApiService
+import com.example.stylefeed.data.remote.productapi.service.ProductApiService
 import com.example.stylefeed.utils.NetworkResultCallAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
