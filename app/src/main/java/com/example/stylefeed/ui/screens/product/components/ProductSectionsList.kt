@@ -1,5 +1,6 @@
-package com.example.stylefeed.ui.screens
+package com.example.stylefeed.ui.screens.product.components
 
+import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box

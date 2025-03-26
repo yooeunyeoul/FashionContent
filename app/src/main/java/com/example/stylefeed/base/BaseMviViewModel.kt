@@ -1,14 +1,12 @@
 package com.example.stylefeed.base
 
-import com.airbnb.mvrx.MavericksState
 import com.airbnb.mvrx.MavericksViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 
-
-abstract class BaseMviViewModel<S : MavericksState, E : UiEvent, F : UiEffect>(
+abstract class BaseMviViewModel<S : BaseState, E : BaseUiEvent, F : BaseUiEffect>(
     initialState: S
 ) : MavericksViewModel<S>(initialState) {
 

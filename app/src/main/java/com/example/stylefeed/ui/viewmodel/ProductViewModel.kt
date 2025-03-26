@@ -1,26 +1,22 @@
 package com.example.stylefeed.ui.viewmodel
 
-import com.airbnb.mvrx.Async
-import com.airbnb.mvrx.MavericksState
+import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.hilt.AssistedViewModelFactory
 import com.airbnb.mvrx.hilt.hiltMavericksViewModelFactory
 import com.example.stylefeed.base.BaseMviViewModel
+import com.example.stylefeed.domain.model.ApiError
 import com.example.stylefeed.domain.model.FooterType
-import com.example.stylefeed.domain.model.SectionState
 import com.example.stylefeed.domain.model.getItemIds
 import com.example.stylefeed.domain.model.shuffleContent
 import com.example.stylefeed.domain.usecase.GetSectionsUseCase
+import com.example.stylefeed.ui.screens.product.interactions.updateSectionForMore
+import com.example.stylefeed.ui.screens.product.interactions.updateSectionForRefresh
+import com.example.stylefeed.utils.ApiException
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-
-data class ProductState(
-    val sections: Async<List<SectionState>> = Uninitialized,
-    val recentlyAddedImageUrl: Set<String> = emptySet() // 최근 추가된 섹션 별 아이템 index
-) : MavericksState
 
 class ProductViewModel @AssistedInject constructor(
     @Assisted initialState: ProductState,
@@ -31,10 +27,22 @@ class ProductViewModel @AssistedInject constructor(
         fetchSections()
     }
 
-
     private fun fetchSections() {
         getSectionsUseCase()
-            .execute { copy(sections = it) } // 결과를 state의 sections에 저장
+            .execute { asyncResult ->
+                when (asyncResult) {
+                    is Success -> copy(sections = asyncResult, apiError = null)
+
+                    is Fail -> {
+                        val apiException = asyncResult.error as? ApiException
+                        val apiError =
+                            ApiError.fromCode(apiException?.code ?: ApiError.NETWORK_ERROR_CODE)
+                        copy(sections = asyncResult, apiError = apiError)
+                    }
+
+                    else -> copy(sections = asyncResult)
+                }
+            }
     }
 
     @AssistedFactory
@@ -51,46 +59,36 @@ class ProductViewModel @AssistedInject constructor(
                 event.sectionIndex,
                 event.footerType
             )
+
+            ProductEvent.OnNetworkRetryClicked -> {
+                fetchSections()
+            }
         }
     }
 
     private fun handleFooterEvent(sectionIndex: Int, footerType: FooterType) {
-        withState { currentState ->
-            val updatedSections = currentState.sections()?.toMutableList() ?: return@withState
-            val sectionState = updatedSections[sectionIndex]
-
-            var addedIds = emptySet<String>()
+        withState { state ->
+            val currentSections = state.sections() ?: return@withState
 
             when (footerType) {
                 FooterType.MORE -> {
-                    val oldVisibleContentIds = sectionState.visibleContent.getItemIds()
-
-                    val newVisibleCount = (sectionState.visibleItemCount + 3)
-                        .coerceAtMost(sectionState.totalItemCount)
-
-                    // ✅ 여기서 visibleItemCount만 늘려서 visibleContent가 업데이트되도록 유도
-                    val updatedSectionState = sectionState.copy(visibleItemCount = newVisibleCount)
-                    val newVisibleContentIds = updatedSectionState.visibleContent.getItemIds()
-
-                    addedIds = newVisibleContentIds - oldVisibleContentIds // 새로 추가된 아이템 ID
-                    updatedSections[sectionIndex] = updatedSectionState
+                    val (updatedSections, addedIds) = updateSectionForMore(
+                        currentSections,
+                        sectionIndex
+                    )
+                    setState {
+                        copy(sections = Success(updatedSections), recentlyAddedImageUrl = addedIds)
+                    }
                 }
 
                 FooterType.REFRESH -> {
-                    val shuffledContent = sectionState.section.content.shuffleContent()
-                    updatedSections[sectionIndex] = sectionState.copy(
-                        section = sectionState.section.copy(content = shuffledContent)
-                    )
+                    val updatedSections = updateSectionForRefresh(currentSections, sectionIndex)
+                    setState {
+                        copy(sections = Success(updatedSections))
+                    }
                 }
 
                 else -> Unit
-            }
-
-            setState {
-                copy(
-                    sections = Success(updatedSections),
-                    recentlyAddedImageUrl = addedIds // ✅ 올바르게 추가된 아이템 ID를 저장
-                )
             }
         }
     }

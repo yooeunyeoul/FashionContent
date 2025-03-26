@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.screens
+package com.example.stylefeed.ui.screens.product.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
