@@ -2,8 +2,6 @@
 
 package com.example.stylefeed.ui.common
 
-import android.util.Log
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -23,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -38,14 +35,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import coil.compose.AsyncImage
 import com.example.stylefeed.domain.model.Banner
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
+private const val AutoScrollIntervalMillis = 3000L
+private const val ScrollAnimationDurationMillis = 100
+
 @Composable
-fun BannerSlider(banners: List<Banner>, isVisible: Boolean,imageAspectRatio: Float) {
+fun BannerSlider(banners: List<Banner>, isVisible: Boolean, imageAspectRatio: Float) {
     if (banners.isEmpty()) return
 
     val pageCount = banners.size
@@ -54,70 +50,46 @@ fun BannerSlider(banners: List<Banner>, isVisible: Boolean,imageAspectRatio: Flo
     val pagerState = rememberPagerState(initialPage = initialPage) { virtualCount }
 
     val coroutineScope = rememberCoroutineScope()
-    val autoScrollJob = remember { mutableStateOf<Job?>(null) }
-
-    fun startAutoScroll(delayMillis: Long = 3000L) {
-        autoScrollJob.value?.cancel()
-        autoScrollJob.value = coroutineScope.launch {
-            Log.d("BannerSliderDebug", "AutoScroll will start after $delayMillis ms delay")
-            delay(delayMillis)
-            while (isActive) {
-                Log.d("BannerSliderDebug", "Scrolling to next page")
-                pagerState.animateScrollToPage(
-                    pagerState.currentPage + 1,
-                    animationSpec = tween(100, easing = FastOutSlowInEasing)
-                )
-                delay(3000)
-            }
-        }
-    }
 
     LaunchedEffect(isVisible) {
         if (!isVisible && pagerState.currentPageOffsetFraction != 0f) {
             pagerState.animateScrollToPage(
                 pagerState.currentPage,  // 현재 페이지로 즉시 되돌리기
-                animationSpec = tween(100)  // 매우 짧은 시간으로 빠르게 처리
+                animationSpec = tween(ScrollAnimationDurationMillis)  // 매우 짧은 시간으로 빠르게 처리
             )
         }
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current
 
-
-    fun stopAutoScroll() {
-        Log.d("BannerSliderDebug", "AutoScroll stopped")
-        autoScrollJob.value?.cancel()
+    val autoScroller = remember(pagerState, coroutineScope) {
+        BannerAutoScroller(pagerState, coroutineScope)
     }
 
-    // Lifecycle에 따라 자동 스크롤 관리
     DisposableEffect(lifecycleOwner.lifecycle, isVisible) {
         val lifecycle = lifecycleOwner.lifecycle
-
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
-                Lifecycle.Event.ON_RESUME -> {
-                    if (isVisible) startAutoScroll()
-                }
-
-                Lifecycle.Event.ON_PAUSE -> stopAutoScroll()
+                Lifecycle.Event.ON_RESUME -> if (isVisible) autoScroller.start()
+                Lifecycle.Event.ON_PAUSE -> autoScroller.stop()
                 else -> Unit
             }
         }
 
         lifecycle.addObserver(observer)
 
-        // Lifecycle 및 Visibility에 따라 즉시 상태를 결정합니다.
         if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED) && isVisible) {
-            startAutoScroll()
+            autoScroller.start()
         } else {
-            stopAutoScroll()
+            autoScroller.stop()
         }
 
         onDispose {
             lifecycle.removeObserver(observer)
-            stopAutoScroll()
+            autoScroller.stop()
         }
     }
+
 
     Box(
         modifier = Modifier
@@ -125,18 +97,15 @@ fun BannerSlider(banners: List<Banner>, isVisible: Boolean,imageAspectRatio: Flo
             .aspectRatio(imageAspectRatio)
             .pointerInput(Unit) {
                 awaitEachGesture {
-                    val down = awaitFirstDown(requireUnconsumed = false)
-                    Log.d("BannerSliderDebug", "User pressed (down)")
-                    stopAutoScroll()
+                    awaitFirstDown(requireUnconsumed = false)
+                    autoScroller.stop()
 
                     var pointerUp = false
                     while (!pointerUp) {
                         val event = awaitPointerEvent()
                         pointerUp = event.changes.all { !it.pressed }
                     }
-
-                    Log.d("BannerSliderDebug", "User released (up)")
-                    startAutoScroll(delayMillis = 3000)
+                    autoScroller.start(delayMillis = AutoScrollIntervalMillis)
                 }
             }) {
         HorizontalPager(
@@ -161,7 +130,7 @@ fun BannerSlider(banners: List<Banner>, isVisible: Boolean,imageAspectRatio: Flo
                         alpha = 1f - pageOffset.absoluteValue.coerceIn(0f, 1f)
                     }
                     .clickable {
-                        Log.d("BannerSliderDebug", "Banner clicked: $realPage")
+
                     }
             )
         }
