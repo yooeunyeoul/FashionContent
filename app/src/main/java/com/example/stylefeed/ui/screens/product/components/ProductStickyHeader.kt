@@ -1,3 +1,5 @@
+package com.example.stylefeed.ui.screens.product.components
+
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -43,9 +45,13 @@ fun StickyHeader(headerText: String?) {
         AnimatedContent(
             targetState = headerText,
             transitionSpec = {
-                (slideInVertically(tween(AnimationDurationMillis)) { height -> height / 3 } + fadeIn(tween(AnimationDurationMillis)))
+                (slideInVertically(tween(AnimationDurationMillis)) { height -> height / 3 } + fadeIn(tween(
+                    AnimationDurationMillis
+                )))
                     .togetherWith(
-                        slideOutVertically(tween(AnimationDurationMillis)) { height -> -height / 3 } + fadeOut(tween(AnimationDurationMillis))
+                        slideOutVertically(tween(AnimationDurationMillis)) { height -> -height / 3 } + fadeOut(tween(
+                            AnimationDurationMillis
+                        ))
                     )
             },
             label = "StickyHeaderTextAnimation"

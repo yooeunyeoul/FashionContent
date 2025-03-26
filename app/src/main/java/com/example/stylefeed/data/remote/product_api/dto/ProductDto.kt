@@ -1,6 +1,5 @@
 package com.example.stylefeed.data.remote.product_api.dto
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 

@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.example.stylefeed.domain.model.Style
 
 @Composable
-fun StyleGrid(styles: List<Style>, recentlyAddedIds: Set<String>) {
+fun StyleGrid(styles: List<Style>, recentlyAddedIds: Set<String>, imageAspectRatio: Float) {
     val spacing = 8.dp
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val columnCount = 3
@@ -48,7 +48,9 @@ fun StyleGrid(styles: List<Style>, recentlyAddedIds: Set<String>) {
                 style = styles[0],
                 modifier = Modifier
                     .width(columnWidth * 2 + spacing)
-                    .aspectRatio(1f), recentlyAdded = recentlyAddedIds.contains(styles[0].linkUrl)
+                    .aspectRatio(1f),
+                recentlyAdded = recentlyAddedIds.contains(styles[0].linkUrl),
+                imageAspectRatio = imageAspectRatio
             )
 
             Column(
@@ -63,7 +65,8 @@ fun StyleGrid(styles: List<Style>, recentlyAddedIds: Set<String>) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f),
-                        recentlyAdded = recentlyAddedIds.contains(styles[1].linkUrl)
+                        recentlyAdded = recentlyAddedIds.contains(styles[1].linkUrl),
+                        imageAspectRatio = imageAspectRatio
                     )
                 } else {
                     Spacer(modifier = Modifier.weight(1f))
@@ -75,7 +78,8 @@ fun StyleGrid(styles: List<Style>, recentlyAddedIds: Set<String>) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f),
-                        recentlyAdded = recentlyAddedIds.contains(styles[2].linkUrl)
+                        recentlyAdded = recentlyAddedIds.contains(styles[2].linkUrl),
+                        imageAspectRatio = imageAspectRatio
                     )
                 } else {
                     Spacer(modifier = Modifier.weight(1f))
@@ -98,7 +102,8 @@ fun StyleGrid(styles: List<Style>, recentlyAddedIds: Set<String>) {
                     StyleCard(
                         style = style,
                         modifier = Modifier.aspectRatio(1f),
-                        recentlyAdded = recentlyAddedIds.contains(style.linkUrl)
+                        recentlyAdded = recentlyAddedIds.contains(style.linkUrl),
+                        imageAspectRatio = imageAspectRatio
                     )
                 }
             }
