@@ -20,7 +20,7 @@ import coil.compose.AsyncImage
 import com.example.stylefeed.domain.model.Style
 
 @Composable
-fun StyleCard(style: Style, modifier: Modifier = Modifier, imageAspectRatio: Float = 500f / 700f,recentlyAdded: Boolean,) {
+fun StyleCard(style: Style, modifier: Modifier = Modifier, imageAspectRatio: Float,recentlyAdded: Boolean,) {
 
     // ✅ 애니메이션 상태 정의
     val animatedAlpha = remember { Animatable(1f) }

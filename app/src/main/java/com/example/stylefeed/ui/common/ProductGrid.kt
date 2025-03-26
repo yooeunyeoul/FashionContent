@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.stylefeed.domain.model.Product
 
 @Composable
-fun ProductGrid(products: List<Product>, recentlyAddedIds: Set<String>) {
+fun ProductGrid(products: List<Product>, recentlyAddedIds: Set<String>, imageAspectRatio: Float) {
     // 화면의 너비를 기준으로 그리드 아이템 높이를 설정 (가로:세로 = 1:1)
     val configuration = LocalConfiguration.current
     val screenWidthDp = configuration.screenWidthDp.dp
@@ -38,7 +38,7 @@ fun ProductGrid(products: List<Product>, recentlyAddedIds: Set<String>) {
                 product = product,
                 recentlyAdded = recentlyAddedIds.contains(product.linkUrl),
                 modifier = Modifier
-                    .size(itemSize), imageAspectRatio = 1f
+                    .size(itemSize), imageAspectRatio = imageAspectRatio
             )
         }
     }

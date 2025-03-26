@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @Composable
-fun BannerSlider(banners: List<Banner>, isVisible: Boolean) {
+fun BannerSlider(banners: List<Banner>, isVisible: Boolean,imageAspectRatio: Float) {
     if (banners.isEmpty()) return
 
     val pageCount = banners.size
@@ -122,7 +122,7 @@ fun BannerSlider(banners: List<Banner>, isVisible: Boolean) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(1f)
+            .aspectRatio(imageAspectRatio)
             .pointerInput(Unit) {
                 awaitEachGesture {
                     val down = awaitFirstDown(requireUnconsumed = false)

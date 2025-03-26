@@ -31,7 +31,7 @@ fun ProductCard(
     modifier: Modifier = Modifier,
     product: Product,
     recentlyAdded: Boolean,
-    imageAspectRatio: Float = 320f / 427f // 기본 비율 설정
+    imageAspectRatio: Float
 ) {
 
     // ✅ 애니메이션 상태 정의
