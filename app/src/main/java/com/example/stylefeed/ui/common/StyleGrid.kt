@@ -1,24 +1,18 @@
 package com.example.stylefeed.ui.common
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -26,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.example.stylefeed.domain.model.Style
 
 @Composable
-fun StyleGrid(styles: List<Style>) {
+fun StyleGrid(styles: List<Style>, recentlyAddedIds: Set<String>) {
     val spacing = 8.dp
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val columnCount = 3
@@ -54,7 +48,7 @@ fun StyleGrid(styles: List<Style>) {
                 style = styles[0],
                 modifier = Modifier
                     .width(columnWidth * 2 + spacing)
-                    .aspectRatio(1f)
+                    .aspectRatio(1f), recentlyAdded = recentlyAddedIds.contains(styles[0].linkUrl)
             )
 
             Column(
@@ -68,7 +62,8 @@ fun StyleGrid(styles: List<Style>) {
                         style = styles[1],
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f)
+                            .weight(1f),
+                        recentlyAdded = recentlyAddedIds.contains(styles[1].linkUrl)
                     )
                 } else {
                     Spacer(modifier = Modifier.weight(1f))
@@ -79,7 +74,8 @@ fun StyleGrid(styles: List<Style>) {
                         style = styles[2],
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f)
+                            .weight(1f),
+                        recentlyAdded = recentlyAddedIds.contains(styles[2].linkUrl)
                     )
                 } else {
                     Spacer(modifier = Modifier.weight(1f))
@@ -101,7 +97,8 @@ fun StyleGrid(styles: List<Style>) {
                 items(gridItems, key = { it.linkUrl }) { style ->
                     StyleCard(
                         style = style,
-                        modifier = Modifier.aspectRatio(1f)
+                        modifier = Modifier.aspectRatio(1f),
+                        recentlyAdded = recentlyAddedIds.contains(style.linkUrl)
                     )
                 }
             }

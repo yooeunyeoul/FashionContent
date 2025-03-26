@@ -7,3 +7,12 @@ fun Content.shuffleContent(): Content = when (this) {
     is Content.StyleContent -> copy(styles = styles.shuffled())
     else -> this
 }
+
+
+fun Content.getItemIds(): Set<String> = when (this) {
+    is Content.GridContent -> products.map { it.linkUrl }.toSet()
+    is Content.ScrollContent -> products.map { it.linkUrl }.toSet()
+    is Content.StyleContent -> styles.map { it.linkUrl }.toSet()
+    is Content.BannerContent -> banners.map { it.linkUrl }.toSet()
+    else -> emptySet()
+}

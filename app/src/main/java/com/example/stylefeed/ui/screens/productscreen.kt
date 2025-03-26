@@ -1,3 +1,4 @@
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -20,7 +21,6 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.compose.collectAsState
 import com.airbnb.mvrx.compose.mavericksViewModel
-import com.example.stylefeed.domain.model.Footer
 import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.ui.screens.SectionsList
 import com.example.stylefeed.ui.viewmodel.ProductEvent
@@ -32,6 +32,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
     val sectionsAsync by viewModel.collectAsState(ProductState::sections)
+    val recentlyAddedIds by viewModel.collectAsState(ProductState::recentlyAddedImageUrl)
     val listState = rememberLazyListState()
 
     val isVisible = remember { mutableStateOf(false) }
@@ -72,25 +73,26 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
                     isVisible = isVisible.value,
                     listState = listState,
                     sectionHeights = sectionHeights,
-                    { sectionState, footerType , sectionIndex ->
+                    recentlyAddedIds = recentlyAddedIds,
+                    { sectionState, footerType, sectionIndex ->
+                        val previousHeight = sectionHeights[sectionIndex] ?: 0f
+
                         viewModel.onEvent(ProductEvent.OnFooterClicked(sectionIndex, footerType))
 
                         if (footerType == FooterType.MORE) {
                             scope.launch {
-                                delay(200)  // UI갱신 대기
+                                delay(200) // ✅ UI 갱신 대기
 
-                                // ✅ 정확한 섹션 위치로 이동
-                                val visibleItems = listState.layoutInfo.visibleItemsInfo
-                                val isSectionAlreadyVisible = visibleItems.any { it.index == sectionIndex }
+                                val newHeight = sectionHeights[sectionIndex] ?: 0f
+                                val increasedHeight = newHeight - previousHeight
 
-                                // 섹션이 안보이면 이동
-                                if (!isSectionAlreadyVisible) {
-                                    listState.animateScrollToItem(sectionIndex)
+                                // 증가된 높이만큼만 이동
+                                if (increasedHeight > 0f) {
+                                    listState.animateScrollBy(increasedHeight)
                                 }
                             }
                         }
-                    }
-                )
+                    }                )
                 StickyHeader(headerText = currentStickyHeader.value)
             }
 

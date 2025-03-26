@@ -10,14 +10,16 @@ import com.airbnb.mvrx.hilt.hiltMavericksViewModelFactory
 import com.example.stylefeed.base.BaseMviViewModel
 import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.domain.model.SectionState
+import com.example.stylefeed.domain.model.getItemIds
+import com.example.stylefeed.domain.model.shuffleContent
 import com.example.stylefeed.domain.usecase.GetSectionsUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import com.example.stylefeed.domain.model.shuffleContent
 
 data class ProductState(
-    val sections: Async<List<SectionState>> = Uninitialized
+    val sections: Async<List<SectionState>> = Uninitialized,
+    val recentlyAddedImageUrl: Set<String> = emptySet() // 최근 추가된 섹션 별 아이템 index
 ) : MavericksState
 
 class ProductViewModel @AssistedInject constructor(
@@ -55,31 +57,42 @@ class ProductViewModel @AssistedInject constructor(
     private fun handleFooterEvent(sectionIndex: Int, footerType: FooterType) {
         withState { currentState ->
             val updatedSections = currentState.sections()?.toMutableList() ?: return@withState
-
             val sectionState = updatedSections[sectionIndex]
+
+            var addedIds = emptySet<String>()
 
             when (footerType) {
                 FooterType.MORE -> {
-                    val newVisibleCount = (sectionState.visibleItemCount + 3).coerceAtMost(sectionState.totalItemCount)
-                    updatedSections[sectionIndex] = sectionState.copy(visibleItemCount = newVisibleCount)
+                    val oldVisibleContentIds = sectionState.visibleContent.getItemIds()
+
+                    val newVisibleCount = (sectionState.visibleItemCount + 3)
+                        .coerceAtMost(sectionState.totalItemCount)
+
+                    // ✅ 여기서 visibleItemCount만 늘려서 visibleContent가 업데이트되도록 유도
+                    val updatedSectionState = sectionState.copy(visibleItemCount = newVisibleCount)
+                    val newVisibleContentIds = updatedSectionState.visibleContent.getItemIds()
+
+                    addedIds = newVisibleContentIds - oldVisibleContentIds // 새로 추가된 아이템 ID
+                    updatedSections[sectionIndex] = updatedSectionState
                 }
 
                 FooterType.REFRESH -> {
-                    // 여기서 shuffled 호출 (setState 외부에서!)
                     val shuffledContent = sectionState.section.content.shuffleContent()
-                    val updatedSection = sectionState.section.copy(content = shuffledContent)
-                    updatedSections[sectionIndex] = sectionState.copy(section = updatedSection)
+                    updatedSections[sectionIndex] = sectionState.copy(
+                        section = sectionState.section.copy(content = shuffledContent)
+                    )
                 }
 
                 else -> Unit
             }
 
-            // 최종 setState는 shuffle 등 랜덤성 작업 이후 결과값을 넣어주므로 순수함수 조건 충족
             setState {
-                copy(sections = Success(updatedSections))
+                copy(
+                    sections = Success(updatedSections),
+                    recentlyAddedImageUrl = addedIds // ✅ 올바르게 추가된 아이템 ID를 저장
+                )
             }
         }
     }
-
 }
 
