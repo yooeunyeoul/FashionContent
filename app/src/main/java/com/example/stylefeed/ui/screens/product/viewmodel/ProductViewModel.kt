@@ -85,14 +85,14 @@ class ProductViewModel @AssistedInject constructor(
                 FooterType.REFRESH -> {
                     viewModelScope.launch {
                         setState {
-                            copy(sectionLoadingMap = sectionLoadingMap + (sectionIndex to true))
+                            copy(sectionUiLoadingMap = sectionUiLoadingMap + (sectionIndex to true))
                         }
                         delay(1000)
                         val updatedSections = updateSectionForRefresh(currentSections, sectionIndex)
                         setState {
                             copy(
                                 sections = Success(updatedSections),
-                                sectionLoadingMap = sectionLoadingMap + (sectionIndex to false)
+                                sectionUiLoadingMap = sectionUiLoadingMap + (sectionIndex to false)
                             )
                         }
                         sendEffect(ProductEffect.ShowRefreshSnackBar)

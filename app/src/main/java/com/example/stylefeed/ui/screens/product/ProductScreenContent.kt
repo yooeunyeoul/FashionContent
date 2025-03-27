@@ -1,7 +1,11 @@
 package com.example.stylefeed.ui.screens.product
 
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.tooling.preview.Preview
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
@@ -12,6 +16,7 @@ import com.example.stylefeed.domain.model.SectionState
 import com.example.stylefeed.designsystem.components.ErrorStateView
 import com.example.stylefeed.designsystem.components.LoadingIndicator
 import com.example.stylefeed.ui.screens.product.components.SuccessContent
+import com.example.stylefeed.ui.screens.product.previewdata.PreviewData
 import com.example.stylefeed.ui.screens.product.viewmodel.ProductEvent
 
 @Composable
@@ -51,3 +56,22 @@ fun ProductScreenContent(
     }
 
 }
+
+@Preview(showBackground = true)
+@Composable
+fun ProductScreenContentPreview() {
+    val sectionHeights = remember { mutableStateMapOf<Int, Float>() }
+    val listState = rememberLazyListState()
+
+    ProductScreenContent(
+        sectionsAsync = Success(PreviewData.allSections), // ✅ 여기만 바꿈!
+        recentlyAddedIds = emptySet(),
+        listState = listState,
+        sectionHeights = sectionHeights,
+        apiError = null,
+        onFooterClick = { _, _, _ -> },
+        onRetryClick = {},
+        sectionLoadingMap = mapOf(0 to false)
+    )
+}
+

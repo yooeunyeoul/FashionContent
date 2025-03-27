@@ -9,10 +9,10 @@ import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.domain.model.SectionState
 import com.example.stylefeed.domain.model.imageAspectRatio
 import com.example.stylefeed.ui.screens.product.components.banners.BannerSlider
-import com.example.stylefeed.ui.screens.product.components.lists.ProductHorizontalList
+import com.example.stylefeed.ui.screens.product.components.footer.ProductFooter
 import com.example.stylefeed.ui.screens.product.components.grid.ProductGrid
 import com.example.stylefeed.ui.screens.product.components.grid.StyleGrid
-import com.example.stylefeed.ui.screens.product.components.footer.ProductFooter
+import com.example.stylefeed.ui.screens.product.components.lists.ProductHorizontalList
 
 @Composable
 fun SectionView(
