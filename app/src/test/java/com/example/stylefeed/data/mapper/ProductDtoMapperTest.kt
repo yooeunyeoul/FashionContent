@@ -1,5 +1,5 @@
-import com.example.stylefeed.data.remote.product_api.dto.RootDto
-import com.example.stylefeed.data.remote.product_api.service.ProductApiService
+import com.example.stylefeed.data.remote.productapi.dto.RootDto
+import com.example.stylefeed.data.remote.productapi.service.ProductApiService
 import com.example.stylefeed.data.repository.ProductRepositoryImpl
 import com.example.stylefeed.domain.model.Content
 import com.example.stylefeed.domain.repository.ProductRepository

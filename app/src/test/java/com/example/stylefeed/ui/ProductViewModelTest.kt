@@ -8,8 +8,8 @@ import com.example.stylefeed.domain.model.Content
 import com.example.stylefeed.domain.model.Section
 import com.example.stylefeed.domain.model.SectionState
 import com.example.stylefeed.domain.usecase.GetSectionsUseCase
-import com.example.stylefeed.ui.viewmodel.ProductState
-import com.example.stylefeed.ui.viewmodel.ProductViewModel
+import com.example.stylefeed.ui.screens.product.viewmodel.ProductState
+import com.example.stylefeed.ui.screens.product.viewmodel.ProductViewModel
 import com.example.stylefeed.utils.ApiException
 import io.mockk.coEvery
 import io.mockk.mockk

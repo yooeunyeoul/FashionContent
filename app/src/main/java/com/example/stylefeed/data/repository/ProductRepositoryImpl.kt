@@ -1,7 +1,7 @@
 package com.example.stylefeed.data.repository
 
-import com.example.stylefeed.data.remote.product_api.mapper.toDomain
-import com.example.stylefeed.data.remote.product_api.service.ProductApiService
+import com.example.stylefeed.data.remote.productapi.mapper.toDomain
+import com.example.stylefeed.data.remote.productapi.service.ProductApiService
 import com.example.stylefeed.domain.model.Section
 import com.example.stylefeed.domain.repository.ProductRepository
 import com.example.stylefeed.utils.mapResult

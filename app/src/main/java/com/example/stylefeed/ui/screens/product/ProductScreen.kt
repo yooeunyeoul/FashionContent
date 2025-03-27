@@ -11,8 +11,8 @@ import com.airbnb.mvrx.compose.collectAsState
 import com.airbnb.mvrx.compose.mavericksViewModel
 import com.example.stylefeed.ui.screens.product.ProductScreenContent
 import com.example.stylefeed.ui.screens.product.interactions.handleFooterClick
-import com.example.stylefeed.ui.viewmodel.ProductState
-import com.example.stylefeed.ui.viewmodel.ProductViewModel
+import com.example.stylefeed.ui.screens.product.viewmodel.ProductState
+import com.example.stylefeed.ui.screens.product.viewmodel.ProductViewModel
 
 
 @Composable
@@ -22,7 +22,6 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
     val apiError by viewModel.collectAsState(ProductState::apiError)
-
     val sectionHeights = remember { mutableStateMapOf<Int, Float>() }
 
     Box(Modifier.fillMaxSize()) {
@@ -32,9 +31,9 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
             listState = listState,
             sectionHeights = sectionHeights,
             apiError = apiError,
-            onFooterClick = { sectionState, footerType, sectionIndex ->
+            onFooterClick = { _, footerType, sectionIndex ->
                 handleFooterClick(
-                    onFooterClicked = viewModel::onEvent, // 🔥 이렇게 이벤트만 넘김
+                    onFooterClicked = viewModel::onEvent,
                     footerType = footerType,
                     sectionIndex = sectionIndex,
                     listState = listState,
