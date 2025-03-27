@@ -20,7 +20,7 @@ import com.example.stylefeed.ui.screens.product.components.cards.ProductCard
 fun ProductHorizontalList(
     products: List<Product>,
     recentlyAddedIds: Set<String>,
-    imageAspectRatio: Float
+    imageAspectRatio: Float,
 ) {
     val cardHeight = 300.dp
     val imageHeight = 200.dp

@@ -15,6 +15,8 @@ import com.example.stylefeed.utils.ApiException
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ProductViewModel @AssistedInject constructor(
     @Assisted initialState: ProductState,
@@ -61,6 +63,7 @@ class ProductViewModel @AssistedInject constructor(
             ProductEvent.OnNetworkRetryClicked -> {
                 fetchSections()
             }
+
         }
     }
 
@@ -80,9 +83,19 @@ class ProductViewModel @AssistedInject constructor(
                 }
 
                 FooterType.REFRESH -> {
-                    val updatedSections = updateSectionForRefresh(currentSections, sectionIndex)
-                    setState {
-                        copy(sections = Success(updatedSections))
+                    viewModelScope.launch {
+                        setState {
+                            copy(sectionLoadingMap = sectionLoadingMap + (sectionIndex to true))
+                        }
+                        delay(1000)
+                        val updatedSections = updateSectionForRefresh(currentSections, sectionIndex)
+                        setState {
+                            copy(
+                                sections = Success(updatedSections),
+                                sectionLoadingMap = sectionLoadingMap + (sectionIndex to false)
+                            )
+                        }
+                        sendEffect(ProductEffect.ShowRefreshSnackBar)
                     }
                 }
 

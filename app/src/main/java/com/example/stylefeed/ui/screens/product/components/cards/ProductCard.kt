@@ -36,8 +36,7 @@ fun ProductCard(
     recentlyAdded: Boolean,
     imageAspectRatio: Float
 ) {
-
-
+    
     val animatedAlpha = remember { Animatable(1f) }
 
     LaunchedEffect(recentlyAdded) {
@@ -48,6 +47,7 @@ fun ProductCard(
             animatedAlpha.snapTo(1f)
         }
     }
+
 
     Column(
         modifier = modifier

@@ -27,6 +27,7 @@ fun SectionsList(
     listState: LazyListState,
     sectionHeights: MutableMap<Int, Float>,
     recentlyAddedIds: Set<String>,
+    sectionLoadingMap: Map<Int, Boolean>,
     onFooterClick: (SectionState, FooterType, Int) -> Unit
 ) {
     val visibleBannerIndices by remember {
@@ -47,6 +48,7 @@ fun SectionsList(
             contentPadding = PaddingValues(bottom = ListBottomPadding)
         ) {
             sectionStates.forEachIndexed { index, sectionState ->
+                val isLoading = sectionLoadingMap[index] == true
                 item(key = sectionState.hashCode()) {
                     Box(
                         Modifier.onGloballyPositioned {
@@ -59,6 +61,7 @@ fun SectionsList(
                             sectionState,
                             bannerVisible,
                             recentlyAddedIds,
+                            isLoading,
                             onFooterClick = { state, footerType ->
                                 onFooterClick(state, footerType, index)
                             })

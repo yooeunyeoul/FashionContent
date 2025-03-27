@@ -19,6 +19,7 @@ fun SectionView(
     sectionState: SectionState,
     isSectionVisible: Boolean,
     recentlyAddedIds: Set<String>,
+    isLoading: Boolean,
     onFooterClick: (SectionState, FooterType) -> Unit
 ) {
 
@@ -33,7 +34,7 @@ fun SectionView(
         val shouldShowFooter =
             footer != null && (footer.type != FooterType.MORE || sectionState.visibleItemCount < sectionState.totalItemCount)
         if (shouldShowFooter && footer != null) {
-            ProductFooter(footer = footer, onFooterClick = { footerType ->
+            ProductFooter(isLoading = isLoading,footer = footer, onFooterClick = { footerType ->
                 onFooterClick(sectionState, footerType)
             }
             )
@@ -51,7 +52,9 @@ fun SectionView(
             )
 
             is Content.ScrollContent -> ProductHorizontalList(
-                content.products, recentlyAddedIds, imageAspectRatio = content.imageAspectRatio
+                products = content.products,
+                recentlyAddedIds = recentlyAddedIds,
+                imageAspectRatio = content.imageAspectRatio,
             )
 
             is Content.StyleContent -> StyleGrid(
