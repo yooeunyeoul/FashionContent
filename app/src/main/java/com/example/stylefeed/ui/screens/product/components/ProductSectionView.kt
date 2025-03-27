@@ -22,57 +22,45 @@ fun SectionView(
     onFooterClick: (SectionState, FooterType) -> Unit
 ) {
 
-    SectionContainer(
-        header = sectionState.section.header?.let {
-            {
-                Header(
-                    title = it.title,
-                    iconUrl = it.iconUrl,
-                    linkButtonText = it.linkUrl
-                )
+    SectionContainer(header = sectionState.section.header?.let {
+        {
+            Header(
+                title = it.title, iconUrl = it.iconUrl, linkButtonText = it.linkUrl
+            )
+        }
+    }, footer = {
+        val footer = sectionState.section.footer
+        val shouldShowFooter =
+            footer != null && (footer.type != FooterType.MORE || sectionState.visibleItemCount < sectionState.totalItemCount)
+        if (shouldShowFooter && footer != null) {
+            ProductFooter(footer = footer, onFooterClick = { footerType ->
+                onFooterClick(sectionState, footerType)
             }
-        },
-        footer = {
-            val footer = sectionState.section.footer
-            val shouldShowFooter =
-                footer != null && (footer.type != FooterType.MORE || sectionState.visibleItemCount < sectionState.totalItemCount)
-            if (shouldShowFooter && footer != null) {
-                Footer(footer) { footerType ->
-                    onFooterClick(sectionState, footerType)
-                }
-            }
-        }) {
+            )
+        }
+    }) {
         when (val content = sectionState.visibleContent) {
-            is Content.BannerContent ->
-                BannerSlider(
-                    content.banners,
-                    isVisible = isSectionVisible,
-                    imageAspectRatio = content.imageAspectRatio
-                )
+            is Content.BannerContent -> BannerSlider(
+                content.banners,
+                isVisible = isSectionVisible,
+                imageAspectRatio = content.imageAspectRatio
+            )
 
-            is Content.GridContent ->
-                ProductGrid(
-                    content.products,
-                    recentlyAddedIds,
-                    imageAspectRatio = content.imageAspectRatio
-                )
+            is Content.GridContent -> ProductGrid(
+                content.products, recentlyAddedIds, imageAspectRatio = content.imageAspectRatio
+            )
 
-            is Content.ScrollContent ->
-                ProductHorizontalList(
-                    content.products,
-                    recentlyAddedIds,
-                    imageAspectRatio = content.imageAspectRatio
-                )
+            is Content.ScrollContent -> ProductHorizontalList(
+                content.products, recentlyAddedIds, imageAspectRatio = content.imageAspectRatio
+            )
 
-            is Content.StyleContent ->
-                StyleGrid(
-                    content.styles,
-                    recentlyAddedIds = recentlyAddedIds,
-                    imageAspectRatio = content.imageAspectRatio
-                )
+            is Content.StyleContent -> StyleGrid(
+                content.styles,
+                recentlyAddedIds = recentlyAddedIds,
+                imageAspectRatio = content.imageAspectRatio
+            )
 
-            Content.UnknownContent ->
-                Text("지원하지 않는 컨텐츠입니다.")
+            Content.UnknownContent -> Text("지원하지 않는 컨텐츠입니다.")
         }
 
     }
