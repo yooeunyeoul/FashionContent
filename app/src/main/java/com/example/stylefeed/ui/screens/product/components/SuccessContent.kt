@@ -19,7 +19,8 @@ fun SuccessContent(
     recentlyAddedIds: Set<String>,
     listState: LazyListState,
     sectionHeights: MutableMap<Int, Float>,
-    onFooterClick: (SectionState, FooterType, Int) -> Unit
+    onFooterClick: (SectionState, FooterType, Int) -> Unit,
+    sectionLoadingMap: Map<Int, Boolean>,
 ) {
     val isVisible = remember { mutableStateOf(true) }
     val currentStickyHeader = rememberStickyHeaderState(sections, listState, sectionHeights)
@@ -31,7 +32,8 @@ fun SuccessContent(
             listState = listState,
             sectionHeights = sectionHeights,
             recentlyAddedIds = recentlyAddedIds,
-            onFooterClick = onFooterClick
+            onFooterClick = onFooterClick,
+            sectionLoadingMap = sectionLoadingMap
         )
         AnimatedStickyHeader(headerText = currentStickyHeader.value)
     }

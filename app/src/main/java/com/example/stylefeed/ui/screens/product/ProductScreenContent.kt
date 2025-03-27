@@ -22,7 +22,8 @@ fun ProductScreenContent(
     sectionHeights: MutableMap<Int, Float>,
     apiError: ApiError?,
     onFooterClick: (SectionState, FooterType, Int) -> Unit,
-    onRetryClick: (ProductEvent) -> Unit
+    onRetryClick: (ProductEvent) -> Unit,
+    sectionLoadingMap: Map<Int, Boolean>
 ) {
     when (sectionsAsync) {
         is Loading -> LoadingIndicator()
@@ -31,7 +32,8 @@ fun ProductScreenContent(
             recentlyAddedIds = recentlyAddedIds,
             listState = listState,
             sectionHeights = sectionHeights,
-            onFooterClick = onFooterClick
+            onFooterClick = onFooterClick,
+            sectionLoadingMap = sectionLoadingMap
         )
 
         is Fail ->

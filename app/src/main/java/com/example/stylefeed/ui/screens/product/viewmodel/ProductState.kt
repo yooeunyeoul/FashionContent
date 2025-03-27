@@ -8,6 +8,7 @@ import com.example.stylefeed.domain.model.SectionState
 
 data class ProductState(
     val sections: Async<List<SectionState>> = Uninitialized,
-    val recentlyAddedImageUrl: Set<String> = emptySet(),// 최근 추가된 섹션 별 아이템 index
-    override val apiError: ApiError? = null
+    val recentlyAddedImageUrl: Set<String> = emptySet(),
+    override val apiError: ApiError? = null,
+    val sectionLoadingMap: Map<Int, Boolean> = emptyMap()
 ) : BaseState

@@ -9,4 +9,6 @@ sealed class ProductEvent : BaseUiEvent {
     data object OnNetworkRetryClicked : ProductEvent()
 }
 
-sealed interface ProductEffect : BaseUiEffect
+sealed interface ProductEffect : BaseUiEffect {
+    data object ShowRefreshSnackBar : ProductEffect
+}

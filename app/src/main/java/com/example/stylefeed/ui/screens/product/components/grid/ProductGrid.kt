@@ -18,7 +18,8 @@ private val ExtraPadding = 20.dp
 fun ProductGrid(
     products: List<Product>,
     recentlyAddedIds: Set<String>,
-    imageAspectRatio: Float
+    imageAspectRatio: Float,
+
 ) {
     val configuration = LocalConfiguration.current
     val screenWidthDp = configuration.screenWidthDp.dp
@@ -38,7 +39,7 @@ fun ProductGrid(
             product = product,
             recentlyAdded = recentlyAddedIds.contains(product.linkUrl),
             modifier = modifier.width(itemSize),
-            imageAspectRatio = imageAspectRatio
+            imageAspectRatio = imageAspectRatio,
         )
     }
 }
@@ -100,6 +101,6 @@ fun ProductGridPreview() {
     ProductGrid(
         products = sampleProducts,
         recentlyAddedIds = setOf("https://example.com/product/1", "https://example.com/product/4"),
-        imageAspectRatio = 1f
+        imageAspectRatio = 1f,
     )
 }
