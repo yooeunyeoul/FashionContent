@@ -3,15 +3,15 @@ package com.example.stylefeed.ui.screens.product.components
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import com.example.stylefeed.designsystem.components.containers.SectionContainer
+import com.example.stylefeed.designsystem.components.header.Header
 import com.example.stylefeed.domain.model.Content
 import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.domain.model.SectionState
 import com.example.stylefeed.domain.model.imageAspectRatio
 import com.example.stylefeed.ui.common.BannerSlider
 import com.example.stylefeed.ui.common.Footer
-import com.example.stylefeed.designsystem.components.header.Header
-import com.example.stylefeed.ui.common.grid.ProductGrid
 import com.example.stylefeed.ui.common.ProductHorizontalList
+import com.example.stylefeed.ui.common.grid.ProductGrid
 import com.example.stylefeed.ui.common.grid.StyleGrid
 
 @Composable

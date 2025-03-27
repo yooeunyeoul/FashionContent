@@ -2,6 +2,7 @@ package com.example.stylefeed.ui.common
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,12 +26,9 @@ import com.example.stylefeed.R
 import com.example.stylefeed.domain.model.Style
 
 @Composable
-fun StyleCard(
-    style: Style,
-    modifier: Modifier = Modifier,
-    imageAspectRatio: Float,
-    recentlyAdded: Boolean,
-) {
+fun StyleCard(style: Style, modifier: Modifier = Modifier, imageAspectRatio: Float,recentlyAdded: Boolean,) {
+
+    // ✅ 애니메이션 상태 정의
     val animatedAlpha = remember { Animatable(1f) }
 
     LaunchedEffect(recentlyAdded) {
@@ -41,27 +40,26 @@ fun StyleCard(
         }
     }
 
+
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
+            .background(color = Color.White)
             .graphicsLayer { alpha = animatedAlpha.value }
             .clickable { /* 상품 클릭 */ },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(style.thumbnailUrl)
-                .crossfade(true)
-                .placeholder(R.drawable.ic_launcher_foreground) // ✅ Placeholder 이미지
-                .error(R.drawable.ic_launcher_foreground)       // ✅ 에러시에도 placeholder
-                .build(),
+            model = style.thumbnailUrl,
             contentDescription = style.linkUrl,
             modifier = Modifier
-                .aspectRatio(imageAspectRatio)
+                .aspectRatio(imageAspectRatio) // ✅ 항상 aspectRatio 사용
                 .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
         )
 
         Spacer(modifier = Modifier.height(6.dp))
+
+
     }
 }
 
