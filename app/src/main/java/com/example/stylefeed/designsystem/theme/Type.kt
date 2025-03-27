@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.theme
+package com.example.stylefeed.designsystem.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

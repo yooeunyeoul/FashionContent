@@ -4,7 +4,7 @@ import ProductScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.stylefeed.ui.theme.FashionContentTheme
+import com.example.stylefeed.designsystem.theme.FashionContentTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

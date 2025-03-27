@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.theme
+package com.example.stylefeed.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

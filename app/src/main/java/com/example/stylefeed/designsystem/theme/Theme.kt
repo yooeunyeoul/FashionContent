@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.theme
+package com.example.stylefeed.designsystem.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
