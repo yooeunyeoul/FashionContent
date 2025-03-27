@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.viewmodel
+package com.example.stylefeed.ui.screens.product.viewmodel
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Uninitialized

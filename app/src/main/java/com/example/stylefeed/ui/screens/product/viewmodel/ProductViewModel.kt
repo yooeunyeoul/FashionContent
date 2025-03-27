@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.viewmodel
+package com.example.stylefeed.ui.screens.product.viewmodel
 
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MavericksViewModelFactory
@@ -8,8 +8,6 @@ import com.airbnb.mvrx.hilt.hiltMavericksViewModelFactory
 import com.example.stylefeed.base.BaseMviViewModel
 import com.example.stylefeed.domain.model.ApiError
 import com.example.stylefeed.domain.model.FooterType
-import com.example.stylefeed.domain.model.getItemIds
-import com.example.stylefeed.domain.model.shuffleContent
 import com.example.stylefeed.domain.usecase.GetSectionsUseCase
 import com.example.stylefeed.ui.screens.product.interactions.updateSectionForMore
 import com.example.stylefeed.ui.screens.product.interactions.updateSectionForRefresh

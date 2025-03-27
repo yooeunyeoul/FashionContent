@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.stylefeed.domain.model.Product
@@ -110,5 +111,24 @@ fun ProductCard(
         }
 
         Spacer(modifier = Modifier.height(6.dp))
+    }
+}
+
+@Preview(showBackground = true, widthDp = 180, heightDp = 320)
+@Composable
+fun ProductCardPreview() {
+    MaterialTheme {
+        ProductCard(
+            product = Product(
+                linkUrl = "https://example.com",
+                thumbnailUrl = "",
+                brandName = "나이키 에어포스 1",
+                formattedPrice = "129,000",
+                saleRate = 15,
+                hasCoupon = true
+            ),
+            recentlyAdded = true,
+            imageAspectRatio = 1f
+        )
     }
 }

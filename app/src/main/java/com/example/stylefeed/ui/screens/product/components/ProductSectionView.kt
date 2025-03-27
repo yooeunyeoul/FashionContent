@@ -1,18 +1,18 @@
 package com.example.stylefeed.ui.screens.product.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.example.stylefeed.designsystem.components.containers.SectionContainer
 import com.example.stylefeed.domain.model.Content
 import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.domain.model.SectionState
 import com.example.stylefeed.domain.model.imageAspectRatio
 import com.example.stylefeed.ui.common.BannerSlider
 import com.example.stylefeed.ui.common.Footer
-import com.example.stylefeed.ui.common.Header
-import com.example.stylefeed.ui.common.ProductGrid
+import com.example.stylefeed.designsystem.components.header.Header
+import com.example.stylefeed.ui.common.grid.ProductGrid
 import com.example.stylefeed.ui.common.ProductHorizontalList
-import com.example.stylefeed.ui.common.StyleGrid
+import com.example.stylefeed.ui.common.grid.StyleGrid
 
 @Composable
 fun SectionView(
@@ -21,8 +21,27 @@ fun SectionView(
     recentlyAddedIds: Set<String>,
     onFooterClick: (SectionState, FooterType) -> Unit
 ) {
-    Column {
-        sectionState.section.header?.let { Header(header = it) }
+
+    SectionContainer(
+        header = sectionState.section.header?.let {
+            {
+                Header(
+                    title = it.title,
+                    iconUrl = it.iconUrl,
+                    linkButtonText = it.linkUrl
+                )
+            }
+        },
+        footer = {
+            val footer = sectionState.section.footer
+            val shouldShowFooter =
+                footer != null && (footer.type != FooterType.MORE || sectionState.visibleItemCount < sectionState.totalItemCount)
+            if (shouldShowFooter && footer != null) {
+                Footer(footer) { footerType ->
+                    onFooterClick(sectionState, footerType)
+                }
+            }
+        }) {
         when (val content = sectionState.visibleContent) {
             is Content.BannerContent ->
                 BannerSlider(
@@ -56,17 +75,6 @@ fun SectionView(
                 Text("지원하지 않는 컨텐츠입니다.")
         }
 
-        sectionState.section.footer?.let { footer ->
-            val shouldShowFooter = when (footer.type) {
-                FooterType.MORE -> sectionState.visibleItemCount < sectionState.totalItemCount
-                else -> true
-            }
-
-            if (shouldShowFooter) {
-                Footer(footer) { footerType ->
-                    onFooterClick(sectionState, footerType)
-                }
-            }
-        }
     }
+
 }

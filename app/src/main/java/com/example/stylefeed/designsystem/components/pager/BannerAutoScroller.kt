@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.common
+package com.example.stylefeed.designsystem.components.pager
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 
 private const val AutoScrollIntervalMillis = 3000L
 private const val ScrollAnimationDurationMillis = 100
+
 @OptIn(ExperimentalFoundationApi::class)
 class BannerAutoScroller(
     private val pagerState: PagerState,
@@ -26,7 +27,10 @@ class BannerAutoScroller(
             while (isActive) {
                 pagerState.animateScrollToPage(
                     pagerState.currentPage + 1,
-                    animationSpec = tween(ScrollAnimationDurationMillis, easing = FastOutSlowInEasing)
+                    animationSpec = tween(
+                        ScrollAnimationDurationMillis,
+                        easing = FastOutSlowInEasing
+                    )
                 )
                 delay(AutoScrollIntervalMillis)
             }

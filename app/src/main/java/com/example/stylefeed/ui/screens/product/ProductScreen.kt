@@ -11,8 +11,8 @@ import com.airbnb.mvrx.compose.collectAsState
 import com.airbnb.mvrx.compose.mavericksViewModel
 import com.example.stylefeed.ui.screens.product.ProductScreenContent
 import com.example.stylefeed.ui.screens.product.interactions.handleFooterClick
-import com.example.stylefeed.ui.viewmodel.ProductState
-import com.example.stylefeed.ui.viewmodel.ProductViewModel
+import com.example.stylefeed.ui.screens.product.viewmodel.ProductState
+import com.example.stylefeed.ui.screens.product.viewmodel.ProductViewModel
 
 
 @Composable
@@ -22,7 +22,6 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
     val apiError by viewModel.collectAsState(ProductState::apiError)
-
     val sectionHeights = remember { mutableStateMapOf<Int, Float>() }
 
     Box(Modifier.fillMaxSize()) {

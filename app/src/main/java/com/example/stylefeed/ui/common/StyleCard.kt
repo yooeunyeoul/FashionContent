@@ -15,14 +15,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.example.stylefeed.R
 import com.example.stylefeed.domain.model.Style
 
 @Composable
-fun StyleCard(style: Style, modifier: Modifier = Modifier, imageAspectRatio: Float,recentlyAdded: Boolean,) {
-
-    // ✅ 애니메이션 상태 정의
+fun StyleCard(
+    style: Style,
+    modifier: Modifier = Modifier,
+    imageAspectRatio: Float,
+    recentlyAdded: Boolean,
+) {
     val animatedAlpha = remember { Animatable(1f) }
 
     LaunchedEffect(recentlyAdded) {
@@ -34,7 +41,6 @@ fun StyleCard(style: Style, modifier: Modifier = Modifier, imageAspectRatio: Flo
         }
     }
 
-
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
@@ -43,15 +49,31 @@ fun StyleCard(style: Style, modifier: Modifier = Modifier, imageAspectRatio: Flo
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
-            model = style.thumbnailUrl,
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(style.thumbnailUrl)
+                .crossfade(true)
+                .placeholder(R.drawable.ic_launcher_foreground) // ✅ Placeholder 이미지
+                .error(R.drawable.ic_launcher_foreground)       // ✅ 에러시에도 placeholder
+                .build(),
             contentDescription = style.linkUrl,
             modifier = Modifier
-                .aspectRatio(imageAspectRatio) // ✅ 항상 aspectRatio 사용
+                .aspectRatio(imageAspectRatio)
                 .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
         )
 
         Spacer(modifier = Modifier.height(6.dp))
-
-
     }
+}
+
+@Preview(showBackground = true, widthDp = 150)
+@Composable
+fun StyleCardPreview() {
+    StyleCard(
+        style = Style(
+            linkUrl = "https://example.com",
+            thumbnailUrl = ""
+        ),
+        imageAspectRatio = 1f,
+        recentlyAdded = true
+    )
 }

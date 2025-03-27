@@ -30,5 +30,5 @@ fun rememberStickyHeaderState(
         } else null
     }
 
-    return currentStickyHeader // 외부에 노출할 때는 State로 제한
+    return currentStickyHeader
 }

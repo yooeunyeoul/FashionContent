@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.example.stylefeed.designsystem.components.AnimatedStickyHeader
 import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.domain.model.SectionState
 import com.example.stylefeed.ui.screens.product.interactions.rememberStickyHeaderState
@@ -31,6 +32,6 @@ fun SuccessContent(
             recentlyAddedIds = recentlyAddedIds,
             onFooterClick = onFooterClick
         )
-        StickyHeader(headerText = currentStickyHeader.value)
+        AnimatedStickyHeader(headerText = currentStickyHeader.value)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.viewmodel
+package com.example.stylefeed.ui.screens.product.viewmodel
 
 import com.example.stylefeed.base.BaseUiEffect
 import com.example.stylefeed.base.BaseUiEvent

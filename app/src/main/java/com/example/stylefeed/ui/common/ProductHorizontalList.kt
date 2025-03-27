@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.stylefeed.domain.model.Product
 
@@ -37,4 +38,25 @@ fun ProductHorizontalList(products: List<Product>, recentlyAddedIds: Set<String>
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProductHorizontalListPreview() {
+    val sampleProducts = List(5) { index ->
+        Product(
+            linkUrl = "https://example.com/product$index",
+            thumbnailUrl = "",
+            brandName = "브랜드 $index",
+            formattedPrice = "${10_000 + index * 1000}원",
+            saleRate = 10 * index,
+            hasCoupon = index % 2 == 0
+        )
+    }
+
+    ProductHorizontalList(
+        products = sampleProducts,
+        recentlyAddedIds = setOf("https://example.com/product2", "https://example.com/product4"),
+        imageAspectRatio = 1f
+    )
 }

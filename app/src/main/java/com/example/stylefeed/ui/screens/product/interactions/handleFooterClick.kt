@@ -7,7 +7,7 @@ import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.snapshotFlow
 import com.example.stylefeed.domain.model.FooterType
-import com.example.stylefeed.ui.viewmodel.ProductEvent
+import com.example.stylefeed.ui.screens.product.viewmodel.ProductEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.mapNotNull
