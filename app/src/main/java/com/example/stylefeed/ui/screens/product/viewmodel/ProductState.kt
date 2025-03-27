@@ -10,5 +10,5 @@ data class ProductState(
     val sections: Async<List<SectionState>> = Uninitialized,
     val recentlyAddedImageUrl: Set<String> = emptySet(),
     override val apiError: ApiError? = null,
-    val sectionLoadingMap: Map<Int, Boolean> = emptyMap()
+    val sectionUiLoadingMap: Map<Int, Boolean> = emptyMap()
 ) : BaseState

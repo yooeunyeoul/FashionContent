@@ -19,7 +19,6 @@ import com.example.stylefeed.ui.screens.product.interactions.handleFooterClick
 import com.example.stylefeed.ui.screens.product.viewmodel.ProductEffect
 import com.example.stylefeed.ui.screens.product.viewmodel.ProductState
 import com.example.stylefeed.ui.screens.product.viewmodel.ProductViewModel
-import kotlinx.coroutines.delay
 
 
 @Composable
@@ -31,7 +30,7 @@ fun ProductScreen(viewModel: ProductViewModel = mavericksViewModel()) {
     val apiError by viewModel.collectAsState(ProductState::apiError)
     val sectionHeights = remember { mutableStateMapOf<Int, Float>() }
 
-    val sectionLoadingMap by viewModel.collectAsState(ProductState::sectionLoadingMap)
+    val sectionLoadingMap by viewModel.collectAsState(ProductState::sectionUiLoadingMap)
     var refreshBannerTrigger by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {

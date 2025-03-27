@@ -7,16 +7,21 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.stylefeed.designsystem.theme.Dimensions.ListBottomPadding
+import com.example.stylefeed.designsystem.theme.FashionContentTheme
 import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.domain.model.SectionState
+import com.example.stylefeed.ui.screens.product.previewdata.PreviewData
 
 private const val FadeAnimationDurationMillis = 600
 
@@ -69,5 +74,23 @@ fun SectionsList(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SectionsListPreview() {
+    val listState = rememberLazyListState()
+    val sectionHeights = remember { mutableStateMapOf<Int, Float>() }
+    FashionContentTheme {
+        SectionsList(
+            sectionStates = PreviewData.allSections.shuffled(), // 🔁 순서 바꿔서 테스트
+            isVisible = true,
+            listState = listState,
+            sectionHeights = sectionHeights,
+            recentlyAddedIds = emptySet(),
+            sectionLoadingMap = mapOf(0 to false, 1 to true), // 로딩 여부 섞어보기
+            onFooterClick = { _, _, _ -> }
+        )
     }
 }
