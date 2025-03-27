@@ -34,7 +34,7 @@ object TestNetworkModule {
     @Singleton
     fun provideRetrofit(mockWebServer: MockWebServer, json: Json): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(mockWebServer.url("/")) // ✅ MockWebServer URL 제공
+            .baseUrl(mockWebServer.url("/"))
             .client(OkHttpClient.Builder().build())
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .addCallAdapterFactory(NetworkResultCallAdapterFactory())
@@ -46,7 +46,7 @@ object TestNetworkModule {
     fun provideJson(): Json = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
-    } // ✅ 추가된 부분
+    }
 
     @Provides
     @Singleton

@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
+import com.example.stylefeed.designsystem.theme.Dimensions.ListBottomPadding
 import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.domain.model.SectionState
 
@@ -44,7 +45,7 @@ fun SectionsList(
                 .fillMaxSize()
                 .alpha(0f),
             state = listState,
-            contentPadding = PaddingValues(bottom = 80.dp)
+            contentPadding = PaddingValues(bottom = ListBottomPadding)
         ) {
             sectionStates.forEachIndexed { index, sectionState ->
                 item(key = sectionState.hashCode()) {

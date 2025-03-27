@@ -27,7 +27,7 @@ class NetworkResultCallAdapterTest {
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://mock.api/")
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType())) // ✅ 추가!
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .addCallAdapterFactory(NetworkResultCallAdapterFactory())
         .build()
 

@@ -28,7 +28,6 @@ import com.example.stylefeed.domain.model.Style
 @Composable
 fun StyleCard(style: Style, modifier: Modifier = Modifier, imageAspectRatio: Float,recentlyAdded: Boolean,) {
 
-    // ✅ 애니메이션 상태 정의
     val animatedAlpha = remember { Animatable(1f) }
 
     LaunchedEffect(recentlyAdded) {
@@ -53,7 +52,7 @@ fun StyleCard(style: Style, modifier: Modifier = Modifier, imageAspectRatio: Flo
             model = style.thumbnailUrl,
             contentDescription = style.linkUrl,
             modifier = Modifier
-                .aspectRatio(imageAspectRatio) // ✅ 항상 aspectRatio 사용
+                .aspectRatio(imageAspectRatio)
                 .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
         )
 

@@ -57,7 +57,7 @@ fun ProductHorizontalListPreview() {
     val sampleProducts = List(5) { index ->
         Product(
             linkUrl = "https://example.com/product$index",
-            thumbnailUrl = "", // ✅ placeholder 이미지 URL이나 빈 값으로 설정
+            thumbnailUrl = "", //
             brandName = "브랜드 $index",
             formattedPrice = "${10_000 + index * 1000}",
             saleRate = 10 * index,
@@ -65,7 +65,7 @@ fun ProductHorizontalListPreview() {
         )
     }
 
-    FashionContentTheme { // ✅ 커스텀 테마 적용
+    FashionContentTheme {
         ProductHorizontalList(
             products = sampleProducts,
             recentlyAddedIds = setOf(
