@@ -1,10 +1,5 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+package com.example.stylefeed.ui.screens.product.components.lists
 
-package com.example.stylefeed.ui.common
-
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -19,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.stylefeed.designsystem.theme.FashionContentTheme
 import com.example.stylefeed.domain.model.Product
+import com.example.stylefeed.ui.screens.product.components.cards.ProductCard
 
 @Composable
 fun ProductHorizontalList(

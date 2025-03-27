@@ -1,6 +1,6 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
 
-package com.example.stylefeed.ui.common
+package com.example.stylefeed.ui.screens.product.components.banners
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable

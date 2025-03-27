@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.common
+package com.example.stylefeed.ui.screens.product.components.cards
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween

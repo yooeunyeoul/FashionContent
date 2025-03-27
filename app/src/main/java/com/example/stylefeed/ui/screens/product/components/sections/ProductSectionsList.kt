@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.screens.product.components
+package com.example.stylefeed.ui.screens.product.components.sections
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -14,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.unit.dp
 import com.example.stylefeed.designsystem.theme.Dimensions.ListBottomPadding
 import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.domain.model.SectionState

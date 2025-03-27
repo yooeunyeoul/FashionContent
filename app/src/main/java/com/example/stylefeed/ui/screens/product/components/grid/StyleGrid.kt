@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.common.grid
+package com.example.stylefeed.ui.screens.product.components.grid
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.stylefeed.R
 import com.example.stylefeed.domain.model.Style
-import com.example.stylefeed.ui.common.StyleCard
+import com.example.stylefeed.ui.screens.product.components.cards.StyleCard
 
 @Composable
 fun StyleGrid(styles: List<Style>, recentlyAddedIds: Set<String>, imageAspectRatio: Float) {

@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import com.example.stylefeed.designsystem.components.AnimatedStickyHeader
 import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.domain.model.SectionState
+import com.example.stylefeed.ui.screens.product.components.sections.SectionsList
 import com.example.stylefeed.ui.screens.product.interactions.rememberStickyHeaderState
 
 @Composable

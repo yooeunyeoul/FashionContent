@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.common
+package com.example.stylefeed.ui.screens.product.components.cards
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -17,12 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.example.stylefeed.R
 import com.example.stylefeed.domain.model.Style
 
 @Composable

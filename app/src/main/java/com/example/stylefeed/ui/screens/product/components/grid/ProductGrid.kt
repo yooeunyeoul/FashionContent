@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.common.grid
+package com.example.stylefeed.ui.screens.product.components.grid
 
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -7,7 +7,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.stylefeed.designsystem.components.grid.FixedVerticalGrid
 import com.example.stylefeed.domain.model.Product
-import com.example.stylefeed.ui.common.ProductCard
+import com.example.stylefeed.ui.screens.product.components.cards.ProductCard
 
 private val GridSpacing = 4.dp
 private val TextHeight = 80.dp

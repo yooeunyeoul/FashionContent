@@ -1,4 +1,4 @@
-package com.example.stylefeed.ui.screens.product.components
+package com.example.stylefeed.ui.screens.product.components.footer
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
