@@ -21,9 +21,7 @@ fun List<Section>.toSectionStates(): List<SectionState> {
         }
 
         SectionState(
-            section = section,
-            visibleItemCount = visibleCount,
-            totalItemCount = totalCount
+            section = section, visibleItemCount = visibleCount, totalItemCount = totalCount
         )
     }
 }
