@@ -1,5 +1,6 @@
 # 📱 FashionContent Android App
-<img src="![Image](https://github.com/user-attachments/assets/0b43a47a-6e26-4e71-a48a-1b6d510ee5a5)" width="300" height="300"/>
+<img src="https://github.com/user-attachments/assets/0b43a47a-6e26-4e71-a48a-1b6d510ee5a5"
+     style="width: 300px; height: auto; object-fit: contain;"/>
 
 아래는 프로젝트의 전반적인 구현 내용과 기술 요구 사항, 그리고 UX적인 고민과 테스트 코드 작성 현황을 상세히 설명한 문서입니다.
 
