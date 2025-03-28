@@ -1,4 +1,5 @@
 import com.example.stylefeed.data.remote.dto.MockResponseDto
+import com.example.stylefeed.data.remote.productapi.MockApi
 import com.example.stylefeed.utils.NetworkResult
 import com.example.stylefeed.utils.NetworkResultCallAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory

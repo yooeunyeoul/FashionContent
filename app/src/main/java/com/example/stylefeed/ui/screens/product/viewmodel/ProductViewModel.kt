@@ -28,8 +28,7 @@ class ProductViewModel @AssistedInject constructor(
     }
 
     private fun fetchSections() {
-        getSectionsUseCase()
-            .execute { asyncResult ->
+        getSectionsUseCase().execute { asyncResult ->
                 when (asyncResult) {
                     is Success -> copy(sections = asyncResult, apiError = null)
 
@@ -56,8 +55,7 @@ class ProductViewModel @AssistedInject constructor(
     override fun onEvent(event: ProductEvent) {
         when (event) {
             is ProductEvent.OnFooterClicked -> handleFooterEvent(
-                event.sectionIndex,
-                event.footerType
+                event.sectionIndex, event.footerType
             )
 
             ProductEvent.OnNetworkRetryClicked -> {
@@ -74,8 +72,7 @@ class ProductViewModel @AssistedInject constructor(
             when (footerType) {
                 FooterType.MORE -> {
                     val (updatedSections, addedIds) = updateSectionForMore(
-                        currentSections,
-                        sectionIndex
+                        currentSections, sectionIndex
                     )
                     setState {
                         copy(sections = Success(updatedSections), recentlyAddedImageUrl = addedIds)
