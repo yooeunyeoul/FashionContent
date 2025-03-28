@@ -2,6 +2,8 @@
 
 아래는 프로젝트의 전반적인 구현 내용과 기술 요구 사항, 그리고 UX적인 고민과 테스트 코드 작성 현황을 상세히 설명한 문서입니다.
 
+![Uploading KakaoTalk_Video_2025-03-28-18-30-121-ezgif.com-video-to-gif-converter (1).gif…]()
+
 <br>
 
 ## 🚩 기술 명세 및 충족 현황
