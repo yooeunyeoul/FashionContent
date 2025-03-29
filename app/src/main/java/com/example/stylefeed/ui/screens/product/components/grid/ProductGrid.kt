@@ -33,7 +33,8 @@ fun ProductGrid(
         items = products,
         columns = columns,
         itemSpacing = GridSpacing,
-        itemHeight = itemHeight
+        itemHeight = itemHeight,
+        keySelector = {it.linkUrl}
     ) { product, modifier ->
         ProductCard(
             product = product,

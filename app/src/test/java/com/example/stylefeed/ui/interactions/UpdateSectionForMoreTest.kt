@@ -1,6 +1,8 @@
-package com.example.stylefeed.ui.screens.product.interactions
+package com.example.stylefeed.ui.interactions
 
 import com.example.stylefeed.domain.model.*
+import com.example.stylefeed.helper.createTestSectionState
+import com.example.stylefeed.ui.screens.product.interactions.updateSectionForMore
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -20,12 +22,12 @@ class UpdateSectionForMoreTest {
             )
         }
 
-        val initial = SectionState(
-            section = Section(null, Content.GridContent(products), null),
-            visibleItemCount = 1,
-            totalItemCount = 5
+        val initial = createTestSectionState(
+            id = "test-grid-0",
+            products = products,
+            visibleCount = 1,
+            totalCount = 5
         )
-
         // When
         val (updatedList, recentlyAdded) = updateSectionForMore(listOf(initial), 0)
 

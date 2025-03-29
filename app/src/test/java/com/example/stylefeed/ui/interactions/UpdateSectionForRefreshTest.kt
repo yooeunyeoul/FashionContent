@@ -3,6 +3,7 @@ package com.example.stylefeed.ui.interactions
 import com.example.stylefeed.ui.screens.product.interactions.updateSectionForRefresh
 
 import com.example.stylefeed.domain.model.*
+import com.example.stylefeed.helper.createTestSectionState
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -11,28 +12,21 @@ class UpdateSectionForRefreshTest {
     @Test
     fun `updateSectionForRefresh 는 콘텐츠 순서를 변경한다`() {
         // Given
-        val products = List(10) { index ->
-            Product(
-                linkUrl = "https://example.com/$index",
-                thumbnailUrl = "https://example.com/image$index.jpg",
-                brandName = "Brand $index",
-                formattedPrice = "10000원",
-                saleRate = 10,
-                hasCoupon = false
-            )
-        }
-
-        val original = SectionState(
-            section = Section(null, Content.GridContent(products), null),
-            visibleItemCount = 10,
-            totalItemCount = 10
+        // Given
+        val original = createTestSectionState(
+            id = "refresh-test-section",
+            visibleCount = 10,
+            totalCount = 10,
+            productCount = 10
         )
 
-        val originalIds = products.map { it.linkUrl }
+        val originalProducts = (original.section.content as Content.GridContent).products
+        val originalIds = originalProducts.map { it.linkUrl }
 
         // When
         val updatedList = updateSectionForRefresh(listOf(original), 0)
-        val shuffled = (updatedList[0].section.content as Content.GridContent).products.map { it.linkUrl }
+        val shuffled =
+            (updatedList[0].section.content as Content.GridContent).products.map { it.linkUrl }
 
         // Then
         assertEquals(originalIds.size, shuffled.size)

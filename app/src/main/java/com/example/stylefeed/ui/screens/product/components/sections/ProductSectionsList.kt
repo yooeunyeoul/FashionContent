@@ -1,5 +1,6 @@
 package com.example.stylefeed.ui.screens.product.components.sections
 
+import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
@@ -9,10 +10,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -22,6 +24,7 @@ import com.example.stylefeed.designsystem.theme.FashionContentTheme
 import com.example.stylefeed.domain.model.FooterType
 import com.example.stylefeed.domain.model.SectionState
 import com.example.stylefeed.ui.screens.product.previewdata.PreviewData
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 private const val FadeAnimationDurationMillis = 600
 
@@ -35,10 +38,15 @@ fun SectionsList(
     sectionLoadingMap: Map<Int, Boolean>,
     onFooterClick: (SectionState, FooterType, Int) -> Unit
 ) {
-    val visibleBannerIndices by remember {
-        derivedStateOf {
+    val visibleBannerIndices = remember { mutableStateOf(setOf<Int>()) }
+
+    LaunchedEffect(listState) {
+        snapshotFlow {
             listState.layoutInfo.visibleItemsInfo.map { it.index }.toSet()
-        }
+        }.distinctUntilChanged()
+            .collect {
+                visibleBannerIndices.value = it
+            }
     }
 
     Crossfade(
@@ -54,13 +62,16 @@ fun SectionsList(
         ) {
             sectionStates.forEachIndexed { index, sectionState ->
                 val isLoading = sectionLoadingMap[index] == true
-                item(key = sectionState.hashCode()) {
+                item(key = sectionState.id) {
                     Box(
                         Modifier.onGloballyPositioned {
-                            sectionHeights[index] = it.size.height.toFloat()
+                            val height = it.size.height.toFloat()
+                            if (sectionHeights[index] != height) {
+                                sectionHeights[index] = height
+                            }
                         }
                     ) {
-                        val bannerVisible = visibleBannerIndices.contains(index)
+                        val bannerVisible = visibleBannerIndices.value.contains(index)
 
                         SectionView(
                             sectionState,

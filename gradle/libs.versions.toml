@@ -9,12 +9,12 @@ kotlinxSerializationJson = "1.5.0"
 kotlinxCoroutinesTest = "1.10.1"
 
 # AndroidX Core
-coreKtx = "1.13.1"
-lifecycleRuntimeKtx = "2.8.6"
-activityCompose = "1.9.2"
+coreKtx = "1.15.0"
+lifecycleRuntimeKtx = "2.8.7"
+activityCompose = "1.10.1"
 
 # Jetpack Compose
-composeBom = "2024.04.01"
+composeBom = "2025.03.01"
 
 # Compose Image Loading
 coilCompose = "2.2.0"

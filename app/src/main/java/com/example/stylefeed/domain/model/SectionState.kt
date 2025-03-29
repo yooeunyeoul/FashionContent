@@ -1,7 +1,9 @@
 package com.example.stylefeed.domain.model
 
 data class SectionState(
-    val section: Section, val visibleItemCount: Int,  // 현재 보여지는 개수
+    val id: String,
+    val section: Section,
+    val visibleItemCount: Int,  // 현재 보여지는 개수
     val totalItemCount: Int     // 전체 데이터 개수
 ) {
     val visibleContent: Content

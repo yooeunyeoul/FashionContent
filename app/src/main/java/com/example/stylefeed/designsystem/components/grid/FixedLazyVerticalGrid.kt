@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +28,7 @@ fun <T> FixedVerticalGrid(
     itemSpacing: Dp,
     itemHeight: Dp,
     userScrollEnabled: Boolean = false,
+    keySelector: ((T) -> Any)? = null, // 🔥 추가!
     content: @Composable (item: T, modifier: Modifier) -> Unit
 ) {
     val rows = (items.size + columns - 1) / columns
@@ -41,12 +43,20 @@ fun <T> FixedVerticalGrid(
         horizontalArrangement = Arrangement.spacedBy(itemSpacing),
         userScrollEnabled = userScrollEnabled
     ) {
-        items(items) { item ->
-            content(item, Modifier)
+        if (keySelector != null) {
+            items(
+                items = items,
+                key = keySelector // ✅ 고유 key 적용
+            ) { item ->
+                content(item, Modifier)
+            }
+        } else {
+            items(items) { item ->
+                content(item, Modifier)
+            }
         }
     }
 }
-
 @Preview(showBackground = true, name = "FixedVerticalGrid - 6 Items (2 Columns)")
 @Composable
 fun FixedVerticalGridPreview_6Items() {
